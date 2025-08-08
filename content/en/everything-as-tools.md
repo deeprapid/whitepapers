@@ -315,81 +315,15 @@ impl ToolRegistry {
 }
 ```
 
-### Queue System Abstraction
+### Async Task Processing
 
-The architecture supports multiple queue systems through a unified adapter pattern:
+The architecture supports both synchronous and asynchronous tool execution through a unified interface. Asynchronous tools use a queue-based system that abstracts the underlying message queue technology, allowing the system to work with any queue implementation.
 
-**Python:**
-```python
-class QueueAdapter:
-    """Abstract interface for queue systems"""
-    async def enqueue(self, job_id: str, payload: dict) -> str
-    async def dequeue(self, queue_name: str) -> Optional[Job]
-    async def get_status(self, job_id: str) -> JobStatus
-    async def complete(self, job_id: str, result: dict)
-    async def fail(self, job_id: str, error: str)
-
-# Supported queue adapters
-class RabbitMQAdapter(QueueAdapter): pass
-class BullMQAdapter(QueueAdapter): pass
-class SQSAdapter(QueueAdapter): pass
-class RedisAdapter(QueueAdapter): pass
-class InMemoryAdapter(QueueAdapter): pass  # For testing
-```
-
-**JavaScript:**
-```javascript
-class QueueAdapter {
-    async enqueue(jobId, payload) { throw new Error('Not implemented'); }
-    async dequeue(queueName) { throw new Error('Not implemented'); }
-    async getStatus(jobId) { throw new Error('Not implemented'); }
-    async complete(jobId, result) { throw new Error('Not implemented'); }
-    async fail(jobId, error) { throw new Error('Not implemented'); }
-}
-
-// Supported queue adapters
-class RabbitMQAdapter extends QueueAdapter {}
-class BullMQAdapter extends QueueAdapter {}
-class SQSAdapter extends QueueAdapter {}
-class RedisAdapter extends QueueAdapter {}
-class InMemoryAdapter extends QueueAdapter {} // For testing
-```
-
-**Go:**
-```go
-type QueueAdapter interface {
-    Enqueue(jobID string, payload map[string]interface{}) (string, error)
-    Dequeue(queueName string) (*Job, error)
-    GetStatus(jobID string) (JobStatus, error)
-    Complete(jobID string, result map[string]interface{}) error
-    Fail(jobID string, error string) error
-}
-
-// Supported queue adapters
-type RabbitMQAdapter struct{}
-type BullMQAdapter struct{}
-type SQSAdapter struct{}
-type RedisAdapter struct{}
-type InMemoryAdapter struct{} // For testing
-```
-
-**Rust:**
-```rust
-trait QueueAdapter {
-    async fn enqueue(&self, job_id: &str, payload: HashMap<String, Value>) -> Result<String, Box<dyn std::error::Error>>;
-    async fn dequeue(&self, queue_name: &str) -> Result<Option<Job>, Box<dyn std::error::Error>>;
-    async fn get_status(&self, job_id: &str) -> Result<JobStatus, Box<dyn std::error::Error>>;
-    async fn complete(&self, job_id: &str, result: HashMap<String, Value>) -> Result<(), Box<dyn std::error::Error>>;
-    async fn fail(&self, job_id: &str, error: &str) -> Result<(), Box<dyn std::error::Error>>;
-}
-
-// Supported queue adapters
-struct RabbitMQAdapter;
-struct BullMQAdapter;
-struct SQSAdapter;
-struct RedisAdapter;
-struct InMemoryAdapter; // For testing
-```
+**Key Benefits:**
+- **Vendor Agnostic** - Switch between queue systems without code changes
+- **Testing** - Use in-memory queues for fast, reliable tests
+- **Scaling** - Start with simple queues, scale to enterprise systems as needed
+- **Multi-Region** - Different queues for different regions
 
 ### Tool Execution Flow
 
@@ -421,105 +355,28 @@ graph TD
 ```
 
 #### 2. **Tool Executor**
-The engine that runs tools with intelligent orchestration.
+The intelligent engine that orchestrates tool execution and workflow management.
 
-**Python:**
-```python
-class ToolExecutor:
-    def execute_tool(self, tool_name, parameters):
-        # Validate parameters
-        # Check permissions
-        # Execute tool
-        # Track usage
-        # Return results
-        
-    def execute_workflow(self, workflow):
-        # Parse dependencies
-        # Execute in parallel where possible
-        # Handle failures and retries
-        # Return composite results
-```
-
-**JavaScript:**
-```javascript
-class ToolExecutor {
-    async executeTool(toolName, parameters) {
-        // Validate parameters
-        // Check permissions
-        // Execute tool
-        // Track usage
-        // Return results
-    }
-    
-    async executeWorkflow(workflow) {
-        // Parse dependencies
-        // Execute in parallel where possible
-        // Handle failures and retries
-        // Return composite results
-    }
-}
-```
-
-**Go:**
-```go
-type ToolExecutor struct{}
-
-func (te *ToolExecutor) ExecuteTool(toolName string, parameters map[string]interface{}) (interface{}, error) {
-    // Validate parameters
-    // Check permissions
-    // Execute tool
-    // Track usage
-    // Return results
-}
-
-func (te *ToolExecutor) ExecuteWorkflow(workflow Workflow) (interface{}, error) {
-    // Parse dependencies
-    // Execute in parallel where possible
-    // Handle failures and retries
-    // Return composite results
-}
-```
-
-**Rust:**
-```rust
-struct ToolExecutor;
-
-impl ToolExecutor {
-    pub async fn execute_tool(&self, tool_name: &str, parameters: HashMap<String, Value>) -> Result<Value, Box<dyn std::error::Error>> {
-        // Validate parameters
-        // Check permissions
-        // Execute tool
-        // Track usage
-        // Return results
-    }
-    
-    pub async fn execute_workflow(&self, workflow: Workflow) -> Result<Value, Box<dyn std::error::Error>> {
-        // Parse dependencies
-        // Execute in parallel where possible
-        // Handle failures and retries
-        // Return composite results
-    }
-}
-```
+**Key Capabilities:**
+- **Parameter Validation** - Ensures tools receive valid inputs
+- **Permission Management** - Controls access to tools and resources
+- **Usage Tracking** - Monitors tool usage for optimization
+- **Workflow Orchestration** - Manages complex multi-tool workflows
+- **Error Handling** - Provides intelligent retry and recovery mechanisms
+- **Parallel Execution** - Runs independent tools simultaneously
 
 
 
 #### 3. **AI Gateway**
-The intelligent router that optimizes for AI consumption.
+The intelligent interface that optimizes tool execution for AI consumption.
 
-```json
-{
-  "ai_gateway": {
-    "capabilities": {
-      "tool_discovery": "Find available tools",
-      "parameter_validation": "Validate inputs",
-      "workflow_orchestration": "Chain tools together",
-      "error_handling": "Intelligent retry logic",
-      "cost_optimization": "Choose most efficient tools"
-    }
-  }
-}
-```
+**Key Capabilities:**
+- **Tool Discovery** - Dynamically finds and recommends available tools
+- **Parameter Validation** - Ensures AI provides valid inputs to tools
+- **Workflow Orchestration** - Intelligently chains tools into complex workflows
+- **Error Handling** - Provides smart retry and recovery mechanisms
+- **Cost Optimization** - Selects the most efficient tools for each task
+- **Performance Monitoring** - Tracks and optimizes tool performance
 
 ### Tool Categories
 
@@ -539,185 +396,38 @@ The intelligent router that optimizes for AI consumption.
 - `analyze_performance` - Performance analysis
 - `train_custom_classifier` - ML model training
 
-### Repository Scaffolding
+### Architectural Components
 
-A complete "Everything as Tools" implementation would follow this structure:
+A complete "Everything as Tools" implementation consists of several key components:
 
-**Python:**
-```python
-# Project structure
-everything-as-tools/
-├── tool_registry/
-│   ├── __init__.py
-│   ├── registry.py          # Main registry implementation
-│   ├── sync_tools.py        # Synchronous tool definitions
-│   ├── async_tools.py       # Asynchronous tool definitions
-│   └── models.py            # Tool and result models
-├── job_engine/
-│   ├── __init__.py
-│   ├── workers.py           # Job processing workers
-│   ├── scheduler.py         # Job scheduling logic
-│   └── monitoring.py        # Job status tracking
-├── queue_adapters/
-│   ├── __init__.py
-│   ├── base.py              # Abstract adapter interface
-│   ├── rabbitmq.py          # RabbitMQ adapter
-│   ├── bullmq.py            # BullMQ adapter
-│   ├── sqs.py               # AWS SQS adapter
-│   └── redis.py             # Redis adapter
-├── tool_composer/
-│   ├── __init__.py
-│   ├── workflow.py          # Workflow orchestration
-│   ├── dependencies.py      # Dependency resolution
-│   └── parallel.py          # Parallel execution
-├── examples/
-│   ├── python/
-│   ├── nodejs/
-│   └── go/
-├── docs/
-│   ├── architecture.md
-│   ├── api.md
-│   └── diagrams/
-└── tests/
-    ├── unit/
-    ├── integration/
-    └── performance/
-```
+**Core Components:**
+- **Tool Registry** - Central repository for tool definitions and discovery
+- **Tool Executor** - Intelligent engine for tool execution and workflow management
+- **AI Gateway** - Optimized interface for AI consumption
+- **Async Task Processing** - Queue-based system for long-running operations
+- **Workflow Orchestrator** - Manages complex multi-tool workflows
 
-**JavaScript:**
-```javascript
-// Project structure
-everything-as-tools/
-├── tool-registry/
-│   ├── index.js             # Main registry implementation
-│   ├── sync-tools.js        # Synchronous tool definitions
-│   ├── async-tools.js       # Asynchronous tool definitions
-│   └── models.js            # Tool and result models
-├── job-engine/
-│   ├── index.js
-│   ├── workers.js           # Job processing workers
-│   ├── scheduler.js         # Job scheduling logic
-│   └── monitoring.js        # Job status tracking
-├── queue-adapters/
-│   ├── index.js
-│   ├── base.js              # Abstract adapter interface
-│   ├── rabbitmq.js          # RabbitMQ adapter
-│   ├── bullmq.js            # BullMQ adapter
-│   ├── sqs.js               # AWS SQS adapter
-│   └── redis.js             # Redis adapter
-├── tool-composer/
-│   ├── index.js
-│   ├── workflow.js          # Workflow orchestration
-│   ├── dependencies.js      # Dependency resolution
-│   └── parallel.js          # Parallel execution
-├── examples/
-│   ├── python/
-│   ├── nodejs/
-│   └── go/
-├── docs/
-│   ├── architecture.md
-│   ├── api.md
-│   └── diagrams/
-└── tests/
-    ├── unit/
-    ├── integration/
-    └── performance/
-```
+**Supporting Infrastructure:**
+- **Queue Adapters** - Abstract interfaces for different message queue systems
+- **Worker Functions** - Serverless functions that process async tasks
+- **Interface Functions** - HTTP endpoints that queue async tasks
+- **Monitoring & Observability** - Track tool performance and usage
 
-**Go:**
-```go
-// Project structure
-everything-as-tools/
-├── tool-registry/
-│   ├── registry.go          # Main registry implementation
-│   ├── sync-tools.go        # Synchronous tool definitions
-│   ├── async-tools.go       # Asynchronous tool definitions
-│   └── models.go            # Tool and result models
-├── job-engine/
-│   ├── workers.go           # Job processing workers
-│   ├── scheduler.go         # Job scheduling logic
-│   └── monitoring.go        # Job status tracking
-├── queue-adapters/
-│   ├── base.go              # Abstract adapter interface
-│   ├── rabbitmq.go          # RabbitMQ adapter
-│   ├── bullmq.go            # BullMQ adapter
-│   ├── sqs.go               # AWS SQS adapter
-│   └── redis.go             # Redis adapter
-├── tool-composer/
-│   ├── workflow.go          # Workflow orchestration
-│   ├── dependencies.go      # Dependency resolution
-│   └── parallel.go          # Parallel execution
-├── examples/
-│   ├── python/
-│   ├── nodejs/
-│   └── go/
-├── docs/
-│   ├── architecture.md
-│   ├── api.md
-│   └── diagrams/
-└── tests/
-    ├── unit/
-    ├── integration/
-    └── performance/
-```
+**Key Architectural Principles:**
+- **Extensibility** - Add new tools without changing existing architecture
+- **Isolation** - Each tool operates independently
+- **Scalability** - Tools can scale independently based on demand
+- **Platform Agnostic** - Works on any cloud or on-premises infrastructure
 
-**Rust:**
-```rust
-// Project structure
-everything-as-tools/
-├── tool-registry/
-│   ├── src/
-│   │   ├── lib.rs           # Main registry implementation
-│   │   ├── sync_tools.rs    # Synchronous tool definitions
-│   │   ├── async_tools.rs   # Asynchronous tool definitions
-│   │   └── models.rs        # Tool and result models
-│   └── Cargo.toml
-├── job-engine/
-│   ├── src/
-│   │   ├── lib.rs
-│   │   ├── workers.rs       # Job processing workers
-│   │   ├── scheduler.rs     # Job scheduling logic
-│   │   └── monitoring.rs    # Job status tracking
-│   └── Cargo.toml
-├── queue-adapters/
-│   ├── src/
-│   │   ├── lib.rs
-│   │   ├── base.rs          # Abstract adapter interface
-│   │   ├── rabbitmq.rs      # RabbitMQ adapter
-│   │   ├── bullmq.rs        # BullMQ adapter
-│   │   ├── sqs.rs           # AWS SQS adapter
-│   │   └── redis.rs         # Redis adapter
-│   └── Cargo.toml
-├── tool-composer/
-│   ├── src/
-│   │   ├── lib.rs
-│   │   ├── workflow.rs      # Workflow orchestration
-│   │   ├── dependencies.rs  # Dependency resolution
-│   │   └── parallel.rs      # Parallel execution
-│   └── Cargo.toml
-├── examples/
-│   ├── python/
-│   ├── nodejs/
-│   └── go/
-├── docs/
-│   ├── architecture.md
-│   ├── api.md
-│   └── diagrams/
-└── tests/
-    ├── unit/
-    ├── integration/
-    └── performance/
-```
+### Key Architectural Benefits
 
-### Queue System Benefits
+The "Everything as Tools" architecture provides several fundamental advantages:
 
-The abstracted queue system provides several advantages:
-
-- **Vendor Agnostic** - Switch between queue systems without code changes
-- **Testing** - Use in-memory queues for fast, reliable tests
-- **Scaling** - Start with Redis, scale to SQS as needed
-- **Multi-Region** - Different queues for different regions
-- **Cost Optimization** - Choose the most cost-effective queue for each use case
+- **AI-Native Design** - Built for AI consumption from the ground up
+- **Infinite Extensibility** - Add new tools without architectural changes
+- **Intelligent Orchestration** - AI can compose complex workflows automatically
+- **Future-Proof** - Architecture evolves with AI capabilities
+- **Universal Compatibility** - Works with any AI system or platform
 
 ## Why This is the Future
 
