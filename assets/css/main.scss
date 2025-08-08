@@ -1084,6 +1084,19 @@ body {
   }
 }
 
+// Mermaid diagrams
+.mermaid {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 2rem 0;
+  text-align: center;
+  
+  svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
 // Hide language labels by default for multi-language sections
 strong:not(:first-of-type) {
   display: none;
