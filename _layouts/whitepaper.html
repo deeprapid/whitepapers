@@ -222,9 +222,14 @@ layout: default
                                         
                                         // Look for code blocks in the next few siblings
                                         let currentElement = label;
+                                        console.log('Starting search from element:', label.textContent);
                                         for (let j = 0; j < 10; j++) { // Check up to 10 elements ahead
                                             currentElement = currentElement.nextElementSibling;
-                                            if (!currentElement) break;
+                                            console.log('Step', j, 'nextElementSibling:', currentElement ? currentElement.tagName : 'null');
+                                            if (!currentElement) {
+                                                console.log('No more siblings, stopping search');
+                                                break;
+                                            }
                                             
                                             console.log('Checking element:', currentElement.tagName, currentElement.className, currentElement.textContent.substring(0, 50));
                                             
