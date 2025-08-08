@@ -354,7 +354,7 @@ function initLanguageSelector() {
     
     // Set current language based on URL
     const path = window.location.pathname;
-    if (path.startsWith('/th/')) {
+    if (path.includes('/th/')) {
         currentLang.textContent = 'TH';
     } else {
         currentLang.textContent = 'EN';
@@ -378,15 +378,16 @@ function initLanguageSelector() {
     // Handle language selection
     languageDropdown.addEventListener('click', function(e) {
         if (e.target.closest('.language-option')) {
+            e.preventDefault();
             const option = e.target.closest('.language-option');
             const lang = option.dataset.lang;
             
-            // Update current language display
-            currentLang.textContent = lang.toUpperCase();
-            
-            // Close dropdown
-            languageDropdown.classList.remove('active');
-            languageBtn.classList.remove('active');
+            // Navigate to the correct language URL
+            if (lang === 'en') {
+                window.location.href = '/whitepapers/en/';
+            } else if (lang === 'th') {
+                window.location.href = '/whitepapers/th/';
+            }
         }
     });
 }
