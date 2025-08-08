@@ -34,6 +34,9 @@ relative_links:
   enabled: true
   collections: true
 
+# Disable automatic GitHub Pages build (let custom workflow handle it)
+github_pages_build: false
+
 # Collections (using pages for whitepapers now)
 
 # Defaults
