@@ -1,6 +1,6 @@
 ---
 layout: whitepaper
-title: "Everything as Tools: The Future of AI-First APIs"
+title: "Everything as Tools: The Future of APIs"
 subtitle: "A revolutionary approach to API architecture where every operation is a discoverable, composable tool for AI and human interfaces"
 date: 2025-08-08
 author: "DeepRapid AI"
