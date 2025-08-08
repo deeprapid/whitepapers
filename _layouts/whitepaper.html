@@ -224,7 +224,7 @@ layout: default
                                         
                                         // Look for code blocks that come after this label in the document
                                         let currentElement = label;
-                                        for (let j = 0; j < 20; j++) { // Check up to 20 elements ahead
+                                        for (let j = 0; j < 30; j++) { // Increased search range
                                             currentElement = currentElement.nextElementSibling;
                                             if (!currentElement) {
                                                 // If no next sibling, try to go up to parent and then to next sibling
@@ -236,7 +236,7 @@ layout: default
                                                 }
                                             }
                                             
-                                            console.log('Checking element:', currentElement.tagName, currentElement.className);
+                                            console.log('Checking element:', currentElement.tagName, currentElement.className, currentElement.textContent.substring(0, 50));
                                             
                                             if (currentElement.tagName === 'PRE' || currentElement.classList.contains('highlight') || 
                                                 (currentElement.tagName === 'DIV' && currentElement.classList.contains('highlighter-rouge'))) {
@@ -272,6 +272,8 @@ layout: default
                             if (currentSection && currentSection.codeBlocks.length >= 2) {
                                 console.log('Creating tabs for final section starting with:', sectionStart.textContent, 'with', currentSection.codeBlocks.length, 'code blocks');
                                 codeSections.push(currentSection);
+                            } else if (currentSection) {
+                                console.log('Final section has insufficient code blocks:', currentSection.codeBlocks.length);
                             }
                             
                             console.log('Found', codeSections.length, 'multi-language sections');
