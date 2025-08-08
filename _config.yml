@@ -47,14 +47,12 @@ defaults:
       path: "content/en"
       type: "pages"
     values:
-      layout: "whitepaper"
       author: "DeepRapid AI"
       lang: "en"
   - scope:
       path: "content/th"
       type: "pages"
     values:
-      layout: "whitepaper"
       author: "DeepRapid AI"
       lang: "th"
 
