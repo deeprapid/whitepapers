@@ -201,118 +201,82 @@ The central nervous system of the architecture.
 }
 ```
 
-### Tool Registration Architecture
+### Tool Registration and Invocation
 
-The system supports both synchronous and asynchronous tools through a unified registration interface:
+The architecture supports both synchronous and asynchronous tools through a unified interface. Every tool is essentially a function that can be invoked in two different ways.
 
-**Python:**
-```python
-class ToolRegistry:
-    def register_sync_tool(self, name: str, tool: SyncTool):
-        """Register a synchronous tool for immediate execution"""
-        self.sync_tools[name] = tool
-    
-    def register_async_tool(self, name: str, tool: AsyncTool, queue_config: QueueConfig):
-        """Register an asynchronous tool with queue configuration"""
-        self.async_tools[name] = tool
-        self.queue_configs[name] = queue_config
-    
-    async def execute_tool(self, name: str, params: dict) -> ToolResult:
-        """Execute a tool, handling both sync and async transparently"""
-        if name in self.sync_tools:
-            return await self.sync_tools[name].execute(params)
-        elif name in self.async_tools:
-            return await self._enqueue_async_job(name, params)
-        else:
-            raise ToolNotFoundError(f"Tool '{name}' not found")
-```
+#### **Tool Registration**
 
-**JavaScript:**
-```javascript
-class ToolRegistry {
-    constructor() {
-        this.syncTools = new Map();
-        this.asyncTools = new Map();
-        this.queueConfigs = new Map();
-    }
-    
-    registerSyncTool(name, tool) {
-        this.syncTools.set(name, tool);
-    }
-    
-    registerAsyncTool(name, tool, queueConfig) {
-        this.asyncTools.set(name, tool);
-        this.queueConfigs.set(name, queueConfig);
-    }
-    
-    async executeTool(name, params) {
-        if (this.syncTools.has(name)) {
-            return await this.syncTools.get(name).execute(params);
-        } else if (this.asyncTools.has(name)) {
-            return await this.enqueueAsyncJob(name, params);
-        } else {
-            throw new Error(`Tool '${name}' not found`);
-        }
-    }
+Tools are registered with their definition and invocation method:
+
+**Synchronous Tool Registration:**
+```json
+POST /api/tools/register
+{
+  "tool": "generate_text",
+  "type": "sync",
+  "description": "Generate text content",
+  "parameters": {
+    "prompt": {"type": "string", "required": true}
+  },
+  "function": {
+    "endpoint": "https://text-service.example.com/generate"
+  }
 }
 ```
 
-**Go:**
-```go
-type ToolRegistry struct {
-    syncTools    map[string]SyncTool
-    asyncTools   map[string]AsyncTool
-    queueConfigs map[string]QueueConfig
-}
-
-func (tr *ToolRegistry) RegisterSyncTool(name string, tool SyncTool) {
-    tr.syncTools[name] = tool
-}
-
-func (tr *ToolRegistry) RegisterAsyncTool(name string, tool AsyncTool, queueConfig QueueConfig) {
-    tr.asyncTools[name] = tool
-    tr.queueConfigs[name] = queueConfig
-}
-
-func (tr *ToolRegistry) ExecuteTool(name string, params map[string]interface{}) (ToolResult, error) {
-    if tool, exists := tr.syncTools[name]; exists {
-        return tool.Execute(params)
-    } else if tool, exists := tr.asyncTools[name]; exists {
-        return tr.enqueueAsyncJob(name, params)
-    } else {
-        return ToolResult{}, fmt.Errorf("Tool '%s' not found", name)
-    }
+**Asynchronous Tool Registration:**
+```json
+POST /api/tools/register
+{
+  "tool": "generate_website",
+  "type": "async", 
+  "description": "Generate complete website",
+  "parameters": {
+    "topic": {"type": "string", "required": true}
+  },
+  "function": {
+    "queue": "website-generation-queue"
+  }
 }
 ```
 
-**Rust:**
-```rust
-struct ToolRegistry {
-    sync_tools: HashMap<String, Box<dyn SyncTool>>,
-    async_tools: HashMap<String, Box<dyn AsyncTool>>,
-    queue_configs: HashMap<String, QueueConfig>,
-}
+#### **Tool Invocation**
 
-impl ToolRegistry {
-    pub fn register_sync_tool(&mut self, name: String, tool: Box<dyn SyncTool>) {
-        self.sync_tools.insert(name, tool);
-    }
-    
-    pub fn register_async_tool(&mut self, name: String, tool: Box<dyn AsyncTool>, queue_config: QueueConfig) {
-        self.async_tools.insert(name.clone(), tool);
-        self.queue_configs.insert(name, queue_config);
-    }
-    
-    pub async fn execute_tool(&self, name: &str, params: HashMap<String, Value>) -> Result<ToolResult, Box<dyn std::error::Error>> {
-        if let Some(tool) = self.sync_tools.get(name) {
-            tool.execute(params).await
-        } else if let Some(tool) = self.async_tools.get(name) {
-            self.enqueue_async_job(name, params).await
-        } else {
-            Err(format!("Tool '{}' not found", name).into())
-        }
-    }
+The same unified API handles both sync and async tool execution:
+
+**Synchronous Tool Execution:**
+```
+POST /api/tools/execute
+{
+  "tool": "generate_text",
+  "parameters": {"prompt": "Write about AI"}
 }
+```
+→ **Direct HTTP/gRPC call** to the function
+→ **Immediate response** with result
+
+**Asynchronous Tool Execution:**
+```
+POST /api/tools/execute
+{
+  "tool": "generate_website", 
+  "parameters": {"topic": "AI tools"}
+}
+```
+→ **Queue task** for the function
+→ **Return job_id immediately**
+→ **Function processes** when queue is consumed
+    
+#### **Key Benefits**
+
+**Unified Interface:** The same API handles both sync and async tools transparently.
+
+**Function Reuse:** The same function logic can be used for both sync and async invocation patterns.
+
+**Flexible Deployment:** Choose sync for immediate results or async for long-running operations.
+
+**Scalable Architecture:** Async tools can handle high load through queue-based processing.
 ```
 
 ### Async Task Processing
@@ -381,20 +345,28 @@ The intelligent interface that optimizes tool execution for AI consumption.
 ### Tool Categories
 
 #### **Synchronous Tools** (Immediate execution)
-- `create_user` - User account creation
-- `validate_email` - Email validation
-- `get_site_analytics` - Real-time analytics
+Synchronous tools provide immediate results through direct function calls. They are ideal for:
+- **Quick operations** - Email validation, text formatting
+- **Real-time responses** - Analytics queries, simple calculations
+- **Lightweight tasks** - Data validation, simple transformations
+
+**Examples:**
+- `validate_email` - Email format validation
 - `generate_simple_text` - Quick text generation
-- `apply_design_system` - Design application
-- `optimize_images` - Image optimization
+- `get_site_analytics` - Real-time analytics queries
+- `apply_design_system` - Design rule application
 
 #### **Asynchronous Tools** (Background processing)
+Asynchronous tools handle long-running operations through queue-based processing. They are ideal for:
+- **Heavy computations** - Data processing, ML training
+- **Time-consuming tasks** - Website generation, content creation
+- **Resource-intensive operations** - File processing, batch operations
+
+**Examples:**
 - `generate_website` - Complete website generation
+- `process_large_dataset` - Data processing and analysis
+- `train_custom_classifier` - Machine learning model training
 - `crawl_website` - Web crawling and analysis
-- `process_large_dataset` - Data processing
-- `generate_site_mockups` - Design mockup generation
-- `analyze_performance` - Performance analysis
-- `train_custom_classifier` - ML model training
 
 ### Architectural Components
 
