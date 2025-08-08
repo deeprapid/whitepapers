@@ -184,89 +184,93 @@ layout: default
                     <!-- Language Tabs for Code Examples -->
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
+                            console.log('Initializing language tabs...');
+                            
                             // Find all multi-language code sections
                             const codeSections = [];
-                            let currentSection = null;
                             
-                            // First pass: find all language labels and group them
-                            const allElements = document.querySelectorAll('strong, pre code');
-                            for (let i = 0; i < allElements.length; i++) {
-                                const element = allElements[i];
-                                
-                                if (element.tagName === 'STRONG' && element.textContent.includes(':')) {
-                                    // Start a new section
-                                    if (currentSection) {
-                                        codeSections.push(currentSection);
-                                    }
-                                    currentSection = {
-                                        title: element,
+                            // Get all strong elements that contain language labels
+                            const languageLabels = document.querySelectorAll('strong');
+                            console.log('Found', languageLabels.length, 'strong elements');
+                            
+                            // Group consecutive language labels and their code blocks
+                            for (let i = 0; i < languageLabels.length; i++) {
+                                const label = languageLabels[i];
+                                if (label.textContent.includes(':')) {
+                                    console.log('Found language label:', label.textContent);
+                                    
+                                    const section = {
+                                        title: label,
                                         codeBlocks: [],
-                                        labels: []
+                                        labels: [label]
                                     };
-                                    currentSection.labels.push(element);
-                                } else if (element.tagName === 'CODE' && currentSection) {
-                                    currentSection.codeBlocks.push(element.parentElement);
+                                    
+                                    // Find all consecutive language labels
+                                    let nextElement = label.nextElementSibling;
+                                    while (nextElement && nextElement.tagName === 'STRONG' && nextElement.textContent.includes(':')) {
+                                        section.labels.push(nextElement);
+                                        nextElement = nextElement.nextElementSibling;
+                                    }
+                                    
+                                    // Find code blocks that follow these labels
+                                    let currentElement = label;
+                                    while (currentElement) {
+                                        currentElement = currentElement.nextElementSibling;
+                                        if (currentElement && currentElement.tagName === 'PRE') {
+                                            section.codeBlocks.push(currentElement);
+                                        } else if (currentElement && currentElement.tagName === 'STRONG' && currentElement.textContent.includes(':')) {
+                                            // Found next language section, stop here
+                                            break;
+                                        }
+                                    }
+                                    
+                                    if (section.codeBlocks.length >= 2) {
+                                        console.log('Creating tabs for section:', label.textContent, 'with', section.codeBlocks.length, 'code blocks');
+                                        codeSections.push(section);
+                                    }
                                 }
                             }
-                            
-                            // Add the last section
-                            if (currentSection) {
-                                codeSections.push(currentSection);
-                            }
-                            
-                            // Second pass: find all labels for each section
-                            codeSections.forEach(function(section) {
-                                let nextElement = section.title.nextElementSibling;
-                                while (nextElement && nextElement.tagName === 'STRONG' && nextElement.textContent.includes(':')) {
-                                    section.labels.push(nextElement);
-                                    nextElement = nextElement.nextElementSibling;
-                                }
-                            });
                             
                             // Process each multi-language section
                             codeSections.forEach(function(section) {
-                                if (section.codeBlocks.length >= 2) {
-                                    console.log('Creating tabs for section:', section.title.textContent, 'with', section.codeBlocks.length, 'code blocks');
-                                    
-                                    // Create tab container
-                                    const tabContainer = document.createElement('div');
-                                    tabContainer.className = 'code-tabs';
-                                    
-                                    // Create tab buttons
-                                    const tabButtons = document.createElement('div');
-                                    tabButtons.className = 'tab-buttons';
-                                    
-                                    const languages = ['python', 'javascript', 'go', 'rust'];
-                                    const languageNames = ['Python', 'JavaScript', 'Go', 'Rust'];
-                                    
-                                    languages.forEach(function(lang, index) {
-                                        const tab = document.createElement('button');
-                                        tab.className = 'tab-button' + (index === 0 ? ' active' : '');
-                                        tab.textContent = languageNames[index];
-                                        tab.onclick = function() { switchTab(this, lang, section); };
-                                        tabButtons.appendChild(tab);
-                                    });
-                                    
-                                    tabContainer.appendChild(tabButtons);
-                                    
-                                    // Insert tab container before the first code block
-                                    const firstCodeBlock = section.codeBlocks[0];
-                                    firstCodeBlock.parentNode.insertBefore(tabContainer, firstCodeBlock);
-                                    
-                                    // Initially hide all but the first code block and label
-                                    section.codeBlocks.forEach(function(codeBlock, index) {
-                                        if (index > 0) {
-                                            codeBlock.style.display = 'none';
-                                        }
-                                    });
-                                    
-                                    // Hide all language labels except the first
-                                    section.labels.forEach(function(label, index) {
-                                        if (index > 0) {
-                                            label.style.display = 'none';
-                                        }
-                                    });
-                                }
+                                // Create tab container
+                                const tabContainer = document.createElement('div');
+                                tabContainer.className = 'code-tabs';
+                                
+                                // Create tab buttons
+                                const tabButtons = document.createElement('div');
+                                tabButtons.className = 'tab-buttons';
+                                
+                                const languages = ['python', 'javascript', 'go', 'rust'];
+                                const languageNames = ['Python', 'JavaScript', 'Go', 'Rust'];
+                                
+                                languages.forEach(function(lang, index) {
+                                    const tab = document.createElement('button');
+                                    tab.className = 'tab-button' + (index === 0 ? ' active' : '');
+                                    tab.textContent = languageNames[index];
+                                    tab.onclick = function() { switchTab(this, lang, section); };
+                                    tabButtons.appendChild(tab);
+                                });
+                                
+                                tabContainer.appendChild(tabButtons);
+                                
+                                // Insert tab container before the first code block
+                                const firstCodeBlock = section.codeBlocks[0];
+                                firstCodeBlock.parentNode.insertBefore(tabContainer, firstCodeBlock);
+                                
+                                // Initially hide all but the first code block and label
+                                section.codeBlocks.forEach(function(codeBlock, index) {
+                                    if (index > 0) {
+                                        codeBlock.style.display = 'none';
+                                    }
+                                });
+                                
+                                // Hide all language labels except the first
+                                section.labels.forEach(function(label, index) {
+                                    if (index > 0) {
+                                        label.style.display = 'none';
+                                    }
+                                });
                             });
                             
                             function switchTab(button, language, section) {
@@ -280,9 +284,9 @@ layout: default
                                 button.classList.add('active');
                                 
                                 // Show/hide code blocks based on language
-                                section.codeBlocks.forEach(function(codeBlock) {
+                                section.codeBlocks.forEach(function(codeBlock, index) {
                                     const codeElement = codeBlock.querySelector('code');
-                                    if (codeElement.className.includes(language)) {
+                                    if (codeElement && codeElement.className.includes(language)) {
                                         codeBlock.style.display = 'block';
                                     } else {
                                         codeBlock.style.display = 'none';
