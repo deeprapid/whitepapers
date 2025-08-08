@@ -1086,14 +1086,13 @@ body {
 
 // Mermaid diagrams
 .mermaid {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 2rem 0;
+  margin: 2rem auto;
   text-align: center;
+  display: block;
   
   svg {
-    max-width: 100% !important;
-    height: auto !important;
+    max-width: 100%;
+    height: auto;
   }
 }
 
