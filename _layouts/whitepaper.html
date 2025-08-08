@@ -220,29 +220,24 @@ layout: default
                                         console.log('Looking for code block after:', label.textContent);
                                         let foundCodeBlock = false;
                                         
-                                        // Look for code blocks in the next few siblings
-                                        let currentElement = label;
-                                        console.log('Starting search from element:', label.textContent);
-                                        for (let j = 0; j < 10; j++) { // Check up to 10 elements ahead
-                                            currentElement = currentElement.nextElementSibling;
-                                            console.log('Step', j, 'nextElementSibling:', currentElement ? currentElement.tagName : 'null');
-                                            if (!currentElement) {
-                                                console.log('No more siblings, stopping search');
-                                                break;
-                                            }
+                                        // Look for code blocks within the same parent container
+                                        const parent = label.parentElement;
+                                        console.log('Parent element:', parent.tagName, parent.className);
+                                        
+                                        // Find all code blocks in the parent
+                                        const codeBlocks = parent.querySelectorAll('pre, .highlight');
+                                        console.log('Found', codeBlocks.length, 'code blocks in parent');
+                                        
+                                        // Find the code block that comes after this label
+                                        for (let j = 0; j < codeBlocks.length; j++) {
+                                            const codeBlock = codeBlocks[j];
+                                            console.log('Checking code block:', codeBlock.tagName, codeBlock.className);
                                             
-                                            console.log('Checking element:', currentElement.tagName, currentElement.className, currentElement.textContent.substring(0, 50));
-                                            
-                                            if (currentElement.tagName === 'PRE' || currentElement.classList.contains('highlight')) {
-                                                console.log('Found code block:', currentElement.tagName, currentElement.className);
-                                                currentSection.codeBlocks.push(currentElement);
+                                            // Check if this code block comes after our label
+                                            if (codeBlock.compareDocumentPosition(label) & Node.DOCUMENT_POSITION_FOLLOWING) {
+                                                console.log('Found code block after label:', codeBlock.tagName, codeBlock.className);
+                                                currentSection.codeBlocks.push(codeBlock);
                                                 foundCodeBlock = true;
-                                                break;
-                                            }
-                                            
-                                            // If we hit another language label, stop looking
-                                            if (currentElement.tagName === 'STRONG' && currentElement.textContent.includes(':')) {
-                                                console.log('Hit another language label, stopping search');
                                                 break;
                                             }
                                         }
