@@ -236,7 +236,8 @@ layout: default
                                             
                                             console.log('Checking element:', currentElement.tagName, currentElement.className);
                                             
-                                            if (currentElement.tagName === 'PRE' || currentElement.classList.contains('highlight')) {
+                                            if (currentElement.tagName === 'PRE' || currentElement.classList.contains('highlight') || 
+                                                (currentElement.tagName === 'DIV' && currentElement.classList.contains('highlighter-rouge'))) {
                                                 console.log('Found code block:', currentElement.tagName, currentElement.className);
                                                 currentSection.codeBlocks.push(currentElement);
                                                 foundCodeBlock = true;
@@ -329,11 +330,21 @@ layout: default
                                 
                                 // Show/hide code blocks based on language
                                 section.codeBlocks.forEach(function(codeBlock, index) {
-                                    const codeElement = codeBlock.querySelector('code');
-                                    if (codeElement && codeElement.className.includes(language)) {
-                                        codeBlock.style.display = 'block';
+                                    // Check if this is a Rouge-highlighted div
+                                    if (codeBlock.tagName === 'DIV' && codeBlock.classList.contains('highlighter-rouge')) {
+                                        if (codeBlock.classList.contains('language-' + language)) {
+                                            codeBlock.style.display = 'block';
+                                        } else {
+                                            codeBlock.style.display = 'none';
+                                        }
                                     } else {
-                                        codeBlock.style.display = 'none';
+                                        // Handle regular pre/code elements
+                                        const codeElement = codeBlock.querySelector('code');
+                                        if (codeElement && codeElement.className.includes(language)) {
+                                            codeBlock.style.display = 'block';
+                                        } else {
+                                            codeBlock.style.display = 'none';
+                                        }
                                     }
                                 });
                                 
