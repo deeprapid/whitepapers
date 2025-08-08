@@ -86,7 +86,7 @@ body {
   top: 0;
   background: #000000;
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid #333;
+
   z-index: 1000;
   padding: 1rem 0;
   
@@ -203,7 +203,7 @@ body {
 
 // Hero section
 .hero {
-  background: linear-gradient(135deg, $primary-color 0%, $primary-hover 100%);
+  background: #000000;
   color: white;
   padding: 4rem 0;
   text-align: center;
