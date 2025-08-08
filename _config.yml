@@ -80,6 +80,7 @@ exclude:
 # Include files
 include:
   - _pages
+  - content
 
 # Sass settings
 sass:
