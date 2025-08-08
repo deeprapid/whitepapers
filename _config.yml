@@ -4,6 +4,11 @@ description: "Thought leadership and technical insights on the future of AI-firs
 url: "https://deeprapid.github.io"
 baseurl: "/whitepapers"
 
+# Internationalization
+languages: ["en"]
+default_lang: "en"
+exclude_from_localization: ["assets", "images", "js", "css"]
+
 # Author information
 author:
   name: "DeepRapid AI"
@@ -29,11 +34,7 @@ relative_links:
   enabled: true
   collections: true
 
-# Collections
-collections:
-  whitepapers:
-    output: true
-    permalink: /:name/
+# Collections (using pages for whitepapers now)
 
 # Defaults
 defaults:
@@ -43,8 +44,8 @@ defaults:
     values:
       layout: "post"
   - scope:
-      path: "_whitepapers"
-      type: "whitepapers"
+      path: "content/en"
+      type: "pages"
     values:
       layout: "whitepaper"
       author: "DeepRapid AI"

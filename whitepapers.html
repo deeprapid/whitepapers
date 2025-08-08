@@ -12,19 +12,26 @@ permalink: /whitepapers/
     </div>
     
     <div class="grid grid-1" style="max-width: 800px; margin: 0 auto;">
-        {% for whitepaper in site.whitepapers %}
+        {% assign whitepapers = site.pages | where: "layout", "whitepaper" %}
+        {% for whitepaper in whitepapers %}
         <div class="card">
             <div class="card-meta">
                 <span><i class="fas fa-calendar"></i> {{ whitepaper.date | date: "%B %Y" }}</span>
+                {% if whitepaper.reading_time %}
                 <span><i class="fas fa-clock"></i> {{ whitepaper.reading_time }} min read</span>
+                {% endif %}
             </div>
             <h3 class="card-title">{{ whitepaper.title }}</h3>
+            {% if whitepaper.subtitle %}
             <p class="card-subtitle">{{ whitepaper.subtitle }}</p>
+            {% endif %}
+            {% if whitepaper.tags %}
             <div class="card-tags">
                 {% for tag in whitepaper.tags %}
                 <span class="tag">{{ tag }}</span>
                 {% endfor %}
             </div>
+            {% endif %}
             <a href="{{ whitepaper.url }}" class="btn btn-primary" style="margin-top: 1rem;">Read Whitepaper</a>
         </div>
         {% endfor %}
