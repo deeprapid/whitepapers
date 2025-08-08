@@ -193,6 +193,16 @@ layout: default
                             const languageLabels = document.querySelectorAll('strong');
                             console.log('Found', languageLabels.length, 'strong elements');
                             
+                            // First, hide ALL language labels immediately
+                            languageLabels.forEach(function(label) {
+                                if (label.textContent.includes(':')) {
+                                    const languageName = label.textContent.replace(':', '').trim();
+                                    if (['Python', 'JavaScript', 'Go', 'Rust'].includes(languageName)) {
+                                        label.style.display = 'none';
+                                    }
+                                }
+                            });
+                            
                             // Find sections with multiple language examples
                             let currentSection = null;
                             let sectionStart = null;
@@ -202,11 +212,9 @@ layout: default
                                 if (label.textContent.includes(':')) {
                                     console.log('Found language label:', label.textContent);
                                     
-                                                                            // Check if this is a programming language label
-                                        const languageName = label.textContent.replace(':', '').trim();
-                                        if (['Python', 'JavaScript', 'Go', 'Rust'].includes(languageName)) {
-                                            // Hide the language label since it's handled by tabs
-                                            label.style.display = 'none';
+                                    // Check if this is a programming language label
+                                    const languageName = label.textContent.replace(':', '').trim();
+                                    if (['Python', 'JavaScript', 'Go', 'Rust'].includes(languageName)) {
                                         if (!currentSection) {
                                             // Start a new section
                                             currentSection = {
@@ -352,14 +360,9 @@ layout: default
                                     }
                                 });
                                 
-                                // Show/hide language labels
-                                const languageName = language.charAt(0).toUpperCase() + language.slice(1);
+                                // Language labels should always be hidden since tabs handle the language display
                                 section.labels.forEach(function(label) {
-                                    if (label.textContent.includes(languageName + ':')) {
-                                        label.style.display = 'block';
-                                    } else if (label.textContent.includes(':')) {
-                                        label.style.display = 'none';
-                                    }
+                                    label.style.display = 'none';
                                 });
                             }
                         });
