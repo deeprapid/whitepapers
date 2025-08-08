@@ -136,9 +136,7 @@ body {
   }
   
   .navbar-search {
-    flex: 1;
     max-width: 400px;
-    margin: 0 2rem;
     
     @media (max-width: $breakpoint-md) {
       display: none;
