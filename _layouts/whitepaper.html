@@ -110,10 +110,17 @@ layout: default
                                     toggleSection(h2Link);
                                 };
                                 h2Link.appendChild(toggleBtn);
+                                
+                                // Initially hide all h3 and h4 links
+                                let nextElement = h2Link.nextElementSibling;
+                                while (nextElement && (nextElement.classList.contains('toc-h3') || nextElement.classList.contains('toc-h4'))) {
+                                    nextElement.classList.remove('expanded');
+                                    nextElement = nextElement.nextElementSibling;
+                                }
                             });
                             
                             // Initially collapse all sections
-                            collapseAllSections();
+                            // (Now handled per section above)
                             
                             function toggleSection(h2Link) {
                                 const toggleBtn = h2Link.querySelector('.toc-toggle');

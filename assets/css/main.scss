@@ -541,6 +541,7 @@ body {
                   color: $text-secondary;
                   cursor: pointer;
                   transition: transform 0.2s ease;
+                  margin-left: 0.5rem;
                   
                   &.expanded {
                     transform: rotate(90deg);
@@ -551,24 +552,20 @@ body {
               &.toc-h3 {
                 font-size: 0.875rem;
                 padding-left: 1.5rem;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease;
+                display: none;
                 
                 &.expanded {
-                  max-height: 200px;
+                  display: block;
                 }
               }
               
               &.toc-h4 {
                 font-size: 0.75rem;
                 padding-left: 2.5rem;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease;
+                display: none;
                 
                 &.expanded {
-                  max-height: 200px;
+                  display: block;
                 }
               }
             }
