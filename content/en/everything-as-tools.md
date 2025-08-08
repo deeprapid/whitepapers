@@ -143,61 +143,6 @@ AI can dynamically discover available tools and their capabilities.
   }
 }
 ```
-```
-
-**Go:**
-```go
-{
-  "tool": "discover_tools",
-  "description": "Find available tools matching criteria",
-  "parameters": {
-    "category": "content_generation",
-    "max_cost": 1.00,
-    "max_time": "5m"
-  },
-  "response": {
-    "tools": [
-      {
-        "tool": "generate_blog_content",
-        "description": "Create blog posts",
-        "capabilities": ["content_generation", "seo_optimization"]
-      },
-      {
-        "tool": "create_product_description", 
-        "description": "Write product descriptions",
-        "capabilities": ["content_generation", "conversion_optimization"]
-      }
-    ]
-  }
-}
-```
-
-**Rust:**
-```rust
-{
-  "tool": "discover_tools",
-  "description": "Find available tools matching criteria",
-  "parameters": {
-    "category": "content_generation",
-    "max_cost": 1.00,
-    "max_time": "5m"
-  },
-  "response": {
-    "tools": [
-      {
-        "tool": "generate_blog_content",
-        "description": "Create blog posts",
-        "capabilities": ["content_generation", "seo_optimization"]
-      },
-      {
-        "tool": "create_product_description", 
-        "description": "Write product descriptions",
-        "capabilities": ["content_generation", "conversion_optimization"]
-      }
-    ]
-  }
-}
-```
 
 #### 3. **Composable Workflows**
 Tools can be chained, combined, and orchestrated automatically.
