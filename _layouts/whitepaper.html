@@ -224,7 +224,7 @@ layout: default
                                         
                                         // Look for code blocks that come after this label in the document
                                         let currentElement = label;
-                                        for (let j = 0; j < 30; j++) { // Increased search range
+                                        for (let j = 0; j < 100; j++) { // Much larger search range
                                             currentElement = currentElement.nextElementSibling;
                                             if (!currentElement) {
                                                 // If no next sibling, try to go up to parent and then to next sibling
@@ -266,6 +266,14 @@ layout: default
                                         sectionStart = null;
                                     }
                                 }
+                            }
+                            
+                            // Also check if there are any remaining sections that weren't processed
+                            if (currentSection && currentSection.codeBlocks.length >= 2) {
+                                console.log('Creating tabs for final section starting with:', sectionStart.textContent, 'with', currentSection.codeBlocks.length, 'code blocks');
+                                codeSections.push(currentSection);
+                            } else if (currentSection) {
+                                console.log('Final section has insufficient code blocks:', currentSection.codeBlocks.length);
                             }
                             
                             // Check the last section
