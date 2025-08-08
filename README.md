@@ -14,18 +14,7 @@ This repository contains technical whitepapers and thought leadership content fr
 
 Visit our live site: **[https://deeprapid.github.io/whitepapers/](https://deeprapid.github.io/whitepapers/)**
 
-## 📖 Available Whitepapers
 
-### [Everything as Tools: The Future of AI-First APIs](./content/en/everything-as-tools.md)
-*Published: August 2025*
-
-A revolutionary approach to API architecture where every operation is a discoverable, composable tool designed for AI consumption. This whitepaper presents the "Everything as Tools" paradigm that reimagines how we build software for the AI age.
-
-**Key Topics:**
-- AI-first API design principles
-- Self-describing tool architecture
-- Intelligent workflow orchestration
-- Future-proof software systems
 
 ## 🏗️ Architecture
 
