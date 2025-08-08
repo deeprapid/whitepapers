@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollEffects();
     initCodeHighlighting();
     initMermaid();
+    initLanguageSelector();
 });
 
 // Navigation functionality
@@ -341,6 +342,53 @@ function initMermaid() {
             pre.parentNode.replaceChild(diagramDiv, pre);
         });
     }
+}
+
+// Language selector functionality
+function initLanguageSelector() {
+    const languageBtn = document.getElementById('language-btn');
+    const languageDropdown = document.getElementById('language-dropdown');
+    const currentLang = document.getElementById('current-lang');
+    
+    if (!languageBtn || !languageDropdown) return;
+    
+    // Set current language based on URL
+    const path = window.location.pathname;
+    if (path.startsWith('/th/')) {
+        currentLang.textContent = 'TH';
+    } else {
+        currentLang.textContent = 'EN';
+    }
+    
+    // Toggle dropdown
+    languageBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        languageDropdown.classList.toggle('active');
+        languageBtn.classList.toggle('active');
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!languageBtn.contains(e.target) && !languageDropdown.contains(e.target)) {
+            languageDropdown.classList.remove('active');
+            languageBtn.classList.remove('active');
+        }
+    });
+    
+    // Handle language selection
+    languageDropdown.addEventListener('click', function(e) {
+        if (e.target.closest('.language-option')) {
+            const option = e.target.closest('.language-option');
+            const lang = option.dataset.lang;
+            
+            // Update current language display
+            currentLang.textContent = lang.toUpperCase();
+            
+            // Close dropdown
+            languageDropdown.classList.remove('active');
+            languageBtn.classList.remove('active');
+        }
+    });
 }
 
 // Export functions for external use

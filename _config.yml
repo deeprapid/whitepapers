@@ -5,7 +5,7 @@ url: "https://deeprapid.github.io"
 baseurl: "/whitepapers"
 
 # Internationalization
-languages: ["en"]
+languages: ["en", "th"]
 default_lang: "en"
 exclude_from_localization: ["assets", "images", "js", "css"]
 
@@ -49,6 +49,14 @@ defaults:
     values:
       layout: "whitepaper"
       author: "DeepRapid AI"
+      lang: "en"
+  - scope:
+      path: "content/th"
+      type: "pages"
+    values:
+      layout: "whitepaper"
+      author: "DeepRapid AI"
+      lang: "th"
 
 # Plugins
 plugins:
