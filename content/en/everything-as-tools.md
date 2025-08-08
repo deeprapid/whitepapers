@@ -66,65 +66,7 @@ Imagine a world where every API operation is a **tool** - a self-describing, com
 
 **Tool-Based Approach:**
 
-**Python:**
-```python
-{
-  "tool": "create_complete_website",
-  "description": "Create a website with content, design, and deployment",
-  "parameters": {
-    "topic": "AI tools",
-    "style": "modern",
-    "features": ["blog", "contact", "analytics"]
-  },
-  "composition": [
-    "generate_site_structure",
-    "create_content",
-    "apply_design_system", 
-    "deploy_site"
-  ]
-}
-```
-
-**JavaScript:**
-```javascript
-{
-  tool: "create_complete_website",
-  description: "Create a website with content, design, and deployment",
-  parameters: {
-    topic: "AI tools",
-    style: "modern",
-    features: ["blog", "contact", "analytics"]
-  },
-  composition: [
-    "generate_site_structure",
-    "create_content",
-    "apply_design_system", 
-    "deploy_site"
-  ]
-}
-```
-
-**Go:**
-```go
-{
-  "tool": "create_complete_website",
-  "description": "Create a website with content, design, and deployment",
-  "parameters": {
-    "topic": "AI tools",
-    "style": "modern",
-    "features": ["blog", "contact", "analytics"]
-  },
-  "composition": [
-    "generate_site_structure",
-    "create_content",
-    "apply_design_system", 
-    "deploy_site"
-  ]
-}
-```
-
-**Rust:**
-```rust
+```json
 {
   "tool": "create_complete_website",
   "description": "Create a website with content, design, and deployment",
@@ -147,89 +89,7 @@ Imagine a world where every API operation is a **tool** - a self-describing, com
 #### 1. **Self-Describing Tools**
 Every tool contains its own documentation, parameter schemas, and capability descriptions.
 
-**Python:**
-```python
-{
-  "tool": "generate_blog_content",
-  "description": "Create engaging blog posts about the specified topic",
-  "parameters": {
-    "topic": {
-      "type": "string",
-      "description": "The main topic to write about"
-    },
-    "tone": {
-      "type": "string", 
-      "enum": ["professional", "casual", "technical"],
-      "default": "professional"
-    },
-    "word_count": {
-      "type": "number",
-      "minimum": 100,
-      "maximum": 2000
-    }
-  },
-  "capabilities": ["content_generation", "seo_optimization"],
-  "estimated_cost": 0.25,
-  "estimated_time": "30s"
-}
-```
-
-**JavaScript:**
-```javascript
-{
-  tool: "generate_blog_content",
-  description: "Create engaging blog posts about the specified topic",
-  parameters: {
-    topic: {
-      type: "string",
-      description: "The main topic to write about"
-    },
-    tone: {
-      type: "string", 
-      enum: ["professional", "casual", "technical"],
-      default: "professional"
-    },
-    word_count: {
-      type: "number",
-      minimum: 100,
-      maximum: 2000
-    }
-  },
-  capabilities: ["content_generation", "seo_optimization"],
-  estimated_cost: 0.25,
-  estimated_time: "30s"
-}
-```
-
-**Go:**
-```go
-{
-  "tool": "generate_blog_content",
-  "description": "Create engaging blog posts about the specified topic",
-  "parameters": {
-    "topic": {
-      "type": "string",
-      "description": "The main topic to write about"
-    },
-    "tone": {
-      "type": "string", 
-      "enum": ["professional", "casual", "technical"],
-      "default": "professional"
-    },
-    "word_count": {
-      "type": "number",
-      "minimum": 100,
-      "maximum": 2000
-    }
-  },
-  "capabilities": ["content_generation", "seo_optimization"],
-  "estimated_cost": 0.25,
-  "estimated_time": "30s"
-}
-```
-
-**Rust:**
-```rust
+```json
 {
   "tool": "generate_blog_content",
   "description": "Create engaging blog posts about the specified topic",
@@ -258,8 +118,7 @@ Every tool contains its own documentation, parameter schemas, and capability des
 #### 2. **Discoverable Architecture**
 AI can dynamically discover available tools and their capabilities.
 
-**Python:**
-```python
+```json
 {
   "tool": "discover_tools",
   "description": "Find available tools matching criteria",
@@ -284,32 +143,6 @@ AI can dynamically discover available tools and their capabilities.
   }
 }
 ```
-
-**JavaScript:**
-```javascript
-{
-  tool: "discover_tools",
-  description: "Find available tools matching criteria",
-  parameters: {
-    category: "content_generation",
-    max_cost: 1.00,
-    max_time: "5m"
-  },
-  response: {
-    tools: [
-      {
-        tool: "generate_blog_content",
-        description: "Create blog posts",
-        capabilities: ["content_generation", "seo_optimization"]
-      },
-      {
-        tool: "create_product_description", 
-        description: "Write product descriptions",
-        capabilities: ["content_generation", "conversion_optimization"]
-      }
-    ]
-  }
-}
 ```
 
 **Go:**
@@ -369,86 +202,7 @@ AI can dynamically discover available tools and their capabilities.
 #### 3. **Composable Workflows**
 Tools can be chained, combined, and orchestrated automatically.
 
-**Python:**
-```python
-{
-  "tool": "orchestrate_marketing_campaign",
-  "description": "Create a complete marketing campaign",
-  "workflow": [
-    {
-      "tool": "analyze_target_audience",
-      "parameters": {"demographics": "tech_professionals"}
-    },
-    {
-      "tool": "generate_campaign_content",
-      "parameters": {"audience_insights": "{{previous_result}}"}
-    },
-    {
-      "tool": "create_landing_page",
-      "parameters": {"content": "{{previous_result}}"}
-    },
-    {
-      "tool": "setup_analytics",
-      "parameters": {"page_id": "{{previous_result.page_id}}"}
-    }
-  ]
-}
-```
-
-**JavaScript:**
-```javascript
-{
-  tool: "orchestrate_marketing_campaign",
-  description: "Create a complete marketing campaign",
-  workflow: [
-    {
-      tool: "analyze_target_audience",
-      parameters: { demographics: "tech_professionals" }
-    },
-    {
-      tool: "generate_campaign_content",
-      parameters: { audience_insights: "{{previous_result}}" }
-    },
-    {
-      tool: "create_landing_page",
-      parameters: { content: "{{previous_result}}" }
-    },
-    {
-      tool: "setup_analytics",
-      parameters: { page_id: "{{previous_result.page_id}}" }
-    }
-  ]
-}
-```
-
-**Go:**
-```go
-{
-  "tool": "orchestrate_marketing_campaign",
-  "description": "Create a complete marketing campaign",
-  "workflow": [
-    {
-      "tool": "analyze_target_audience",
-      "parameters": {"demographics": "tech_professionals"}
-    },
-    {
-      "tool": "generate_campaign_content",
-      "parameters": {"audience_insights": "{{previous_result}}"}
-    },
-    {
-      "tool": "create_landing_page",
-      "parameters": {"content": "{{previous_result}}"}
-    },
-    {
-      "tool": "setup_analytics",
-      "parameters": {"page_id": "{{previous_result.page_id}}"}
-    }
-  ]
-}
-```
-
-**Rust:**
-```rust
+```json
 {
   "tool": "orchestrate_marketing_campaign",
   "description": "Create a complete marketing campaign",

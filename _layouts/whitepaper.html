@@ -280,31 +280,7 @@ layout: default
                             codeSections.forEach(function(section, sectionIndex) {
                                 console.log('Processing section', sectionIndex, 'with', section.labels.length, 'labels and', section.codeBlocks.length, 'code blocks');
                                 
-                                // Check if this section contains JSON (same for all languages)
-                                const isJsonSection = section.codeBlocks.some(function(codeBlock) {
-                                    const codeElement = codeBlock.querySelector('code');
-                                    if (codeElement) {
-                                        const text = codeElement.textContent.trim();
-                                        // Check for JSON structure with common tool-related keys
-                                        return text.startsWith('{') && text.endsWith('}') && 
-                                               (text.includes('"tool"') || text.includes('"description"') || 
-                                                text.includes('"parameters"') || text.includes('"workflow"') ||
-                                                text.includes('"capabilities"') || text.includes('"ai_gateway"'));
-                                    }
-                                    return false;
-                                });
-                                
-                                if (isJsonSection) {
-                                    console.log('Skipping tabs for JSON section');
-                                    // For JSON sections, show all code blocks and hide all language labels
-                                    section.codeBlocks.forEach(function(codeBlock) {
-                                        codeBlock.style.display = 'block';
-                                    });
-                                    section.labels.forEach(function(label) {
-                                        label.style.display = 'none';
-                                    });
-                                    return;
-                                }
+
                                 
                                 // Create tab container
                                 const tabContainer = document.createElement('div');
