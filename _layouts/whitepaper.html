@@ -202,9 +202,11 @@ layout: default
                                 if (label.textContent.includes(':')) {
                                     console.log('Found language label:', label.textContent);
                                     
-                                    // Check if this is a programming language label
-                                    const languageName = label.textContent.replace(':', '').trim();
-                                    if (['Python', 'JavaScript', 'Go', 'Rust'].includes(languageName)) {
+                                                                            // Check if this is a programming language label
+                                        const languageName = label.textContent.replace(':', '').trim();
+                                        if (['Python', 'JavaScript', 'Go', 'Rust'].includes(languageName)) {
+                                            // Hide the language label since it's handled by tabs
+                                            label.style.display = 'none';
                                         if (!currentSection) {
                                             // Start a new section
                                             currentSection = {
@@ -277,6 +279,29 @@ layout: default
                             // Process each multi-language section
                             codeSections.forEach(function(section, sectionIndex) {
                                 console.log('Processing section', sectionIndex, 'with', section.labels.length, 'labels and', section.codeBlocks.length, 'code blocks');
+                                
+                                // Check if this section contains JSON (same for all languages)
+                                const isJsonSection = section.codeBlocks.some(function(codeBlock) {
+                                    const codeElement = codeBlock.querySelector('code');
+                                    if (codeElement) {
+                                        const text = codeElement.textContent.trim();
+                                        return text.startsWith('{') && text.endsWith('}') && 
+                                               (text.includes('"tool"') || text.includes('"description"') || text.includes('"parameters"'));
+                                    }
+                                    return false;
+                                });
+                                
+                                if (isJsonSection) {
+                                    console.log('Skipping tabs for JSON section');
+                                    // For JSON sections, show all code blocks and hide all language labels
+                                    section.codeBlocks.forEach(function(codeBlock) {
+                                        codeBlock.style.display = 'block';
+                                    });
+                                    section.labels.forEach(function(label) {
+                                        label.style.display = 'none';
+                                    });
+                                    return;
+                                }
                                 
                                 // Create tab container
                                 const tabContainer = document.createElement('div');
