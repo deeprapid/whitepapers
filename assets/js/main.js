@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     initScrollEffects();
     initCodeHighlighting();
+    initMermaid();
 });
 
 // Navigation functionality
@@ -311,6 +312,35 @@ function trackSearch(query) {
     trackEvent('search', {
         search_term: query
     });
+}
+
+// Mermaid diagram initialization
+function initMermaid() {
+    if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            },
+            sequence: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+        
+        // Process all mermaid diagrams
+        document.querySelectorAll('pre code.language-mermaid').forEach(block => {
+            const pre = block.parentElement;
+            const diagramDiv = document.createElement('div');
+            diagramDiv.className = 'mermaid';
+            diagramDiv.textContent = block.textContent;
+            
+            // Replace the code block with the diagram
+            pre.parentNode.replaceChild(diagramDiv, pre);
+        });
+    }
 }
 
 // Export functions for external use

@@ -56,6 +56,10 @@ plugins:
   - jekyll-sitemap
   - jekyll-redirect-from
 
+# Mermaid support
+mermaid:
+  enabled: true
+
 # Exclude from processing
 exclude:
   - Gemfile
