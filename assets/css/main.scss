@@ -135,12 +135,19 @@ body {
     }
   }
   
-  .navbar-search {
-    max-width: 400px;
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
     
     @media (max-width: $breakpoint-md) {
       display: none;
     }
+  }
+  
+  .navbar-search {
+    max-width: 300px;
     
     #search-container {
       position: relative;
@@ -178,11 +185,7 @@ body {
   }
   
   .navbar-language {
-    margin-left: 1rem;
-    
-    @media (max-width: $breakpoint-md) {
-      display: none;
-    }
+    flex-shrink: 0;
     
     .language-selector {
       position: relative;
