@@ -193,15 +193,7 @@ layout: default
                             const languageLabels = document.querySelectorAll('strong');
                             console.log('Found', languageLabels.length, 'strong elements');
                             
-                            // First, hide ALL language labels immediately
-                            languageLabels.forEach(function(label) {
-                                if (label.textContent.includes(':')) {
-                                    const languageName = label.textContent.replace(':', '').trim();
-                                    if (['Python', 'JavaScript', 'Go', 'Rust'].includes(languageName)) {
-                                        label.style.display = 'none';
-                                    }
-                                }
-                            });
+                            // Don't hide language labels immediately - only hide them when tabs are created
                             
                             // Find sections with multiple language examples
                             let currentSection = null;
@@ -315,18 +307,16 @@ layout: default
                                 const firstCodeBlock = section.codeBlocks[0];
                                 firstCodeBlock.parentNode.insertBefore(tabContainer, firstCodeBlock);
                                 
-                                // Initially hide all but the first code block and label
+                                // Initially hide all but the first code block
                                 section.codeBlocks.forEach(function(codeBlock, index) {
                                     if (index > 0) {
                                         codeBlock.style.display = 'none';
                                     }
                                 });
                                 
-                                // Hide all language labels except the first
-                                section.labels.forEach(function(label, index) {
-                                    if (index > 0) {
-                                        label.style.display = 'none';
-                                    }
+                                // Hide all language labels since tabs handle the display
+                                section.labels.forEach(function(label) {
+                                    label.style.display = 'none';
                                 });
                             });
                             
