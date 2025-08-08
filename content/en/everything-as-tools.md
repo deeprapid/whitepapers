@@ -609,53 +609,7 @@ func (tr *ToolRegistry) ExecuteTool(name string, params map[string]interface{}) 
 #### 3. **AI Gateway**
 The intelligent router that optimizes for AI consumption.
 
-**Python:**
-```python
-{
-  "ai_gateway": {
-    "capabilities": {
-      "tool_discovery": "Find available tools",
-      "parameter_validation": "Validate inputs",
-      "workflow_orchestration": "Chain tools together",
-      "error_handling": "Intelligent retry logic",
-      "cost_optimization": "Choose most efficient tools"
-    }
-  }
-}
-```
-
-**JavaScript:**
-```javascript
-{
-  ai_gateway: {
-    capabilities: {
-      tool_discovery: "Find available tools",
-      parameter_validation: "Validate inputs",
-      workflow_orchestration: "Chain tools together",
-      error_handling: "Intelligent retry logic",
-      cost_optimization: "Choose most efficient tools"
-    }
-  }
-}
-```
-
-**Go:**
-```go
-{
-  "ai_gateway": {
-    "capabilities": {
-      "tool_discovery": "Find available tools",
-      "parameter_validation": "Validate inputs",
-      "workflow_orchestration": "Chain tools together",
-      "error_handling": "Intelligent retry logic",
-      "cost_optimization": "Choose most efficient tools"
-    }
-  }
-}
-```
-
-**Rust:**
-```rust
+```json
 {
   "ai_gateway": {
     "capabilities": {
