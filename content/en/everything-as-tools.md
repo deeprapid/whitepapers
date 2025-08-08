@@ -205,6 +205,7 @@ The central nervous system of the architecture.
 
 The system supports both synchronous and asynchronous tools through a unified registration interface:
 
+**Python:**
 ```python
 class ToolRegistry:
     def register_sync_tool(self, name: str, tool: SyncTool):
@@ -226,10 +227,99 @@ class ToolRegistry:
             raise ToolNotFoundError(f"Tool '{name}' not found")
 ```
 
+**JavaScript:**
+```javascript
+class ToolRegistry {
+    constructor() {
+        this.syncTools = new Map();
+        this.asyncTools = new Map();
+        this.queueConfigs = new Map();
+    }
+    
+    registerSyncTool(name, tool) {
+        this.syncTools.set(name, tool);
+    }
+    
+    registerAsyncTool(name, tool, queueConfig) {
+        this.asyncTools.set(name, tool);
+        this.queueConfigs.set(name, queueConfig);
+    }
+    
+    async executeTool(name, params) {
+        if (this.syncTools.has(name)) {
+            return await this.syncTools.get(name).execute(params);
+        } else if (this.asyncTools.has(name)) {
+            return await this.enqueueAsyncJob(name, params);
+        } else {
+            throw new Error(`Tool '${name}' not found`);
+        }
+    }
+}
+```
+
+**Go:**
+```go
+type ToolRegistry struct {
+    syncTools    map[string]SyncTool
+    asyncTools   map[string]AsyncTool
+    queueConfigs map[string]QueueConfig
+}
+
+func (tr *ToolRegistry) RegisterSyncTool(name string, tool SyncTool) {
+    tr.syncTools[name] = tool
+}
+
+func (tr *ToolRegistry) RegisterAsyncTool(name string, tool AsyncTool, queueConfig QueueConfig) {
+    tr.asyncTools[name] = tool
+    tr.queueConfigs[name] = queueConfig
+}
+
+func (tr *ToolRegistry) ExecuteTool(name string, params map[string]interface{}) (ToolResult, error) {
+    if tool, exists := tr.syncTools[name]; exists {
+        return tool.Execute(params)
+    } else if tool, exists := tr.asyncTools[name]; exists {
+        return tr.enqueueAsyncJob(name, params)
+    } else {
+        return ToolResult{}, fmt.Errorf("Tool '%s' not found", name)
+    }
+}
+```
+
+**Rust:**
+```rust
+struct ToolRegistry {
+    sync_tools: HashMap<String, Box<dyn SyncTool>>,
+    async_tools: HashMap<String, Box<dyn AsyncTool>>,
+    queue_configs: HashMap<String, QueueConfig>,
+}
+
+impl ToolRegistry {
+    pub fn register_sync_tool(&mut self, name: String, tool: Box<dyn SyncTool>) {
+        self.sync_tools.insert(name, tool);
+    }
+    
+    pub fn register_async_tool(&mut self, name: String, tool: Box<dyn AsyncTool>, queue_config: QueueConfig) {
+        self.async_tools.insert(name.clone(), tool);
+        self.queue_configs.insert(name, queue_config);
+    }
+    
+    pub async fn execute_tool(&self, name: &str, params: HashMap<String, Value>) -> Result<ToolResult, Box<dyn std::error::Error>> {
+        if let Some(tool) = self.sync_tools.get(name) {
+            tool.execute(params).await
+        } else if let Some(tool) = self.async_tools.get(name) {
+            self.enqueue_async_job(name, params).await
+        } else {
+            Err(format!("Tool '{}' not found", name).into())
+        }
+    }
+}
+```
+
 ### Queue System Abstraction
 
 The architecture supports multiple queue systems through a unified adapter pattern:
 
+**Python:**
 ```python
 class QueueAdapter:
     """Abstract interface for queue systems"""
@@ -245,6 +335,60 @@ class BullMQAdapter(QueueAdapter): pass
 class SQSAdapter(QueueAdapter): pass
 class RedisAdapter(QueueAdapter): pass
 class InMemoryAdapter(QueueAdapter): pass  # For testing
+```
+
+**JavaScript:**
+```javascript
+class QueueAdapter {
+    async enqueue(jobId, payload) { throw new Error('Not implemented'); }
+    async dequeue(queueName) { throw new Error('Not implemented'); }
+    async getStatus(jobId) { throw new Error('Not implemented'); }
+    async complete(jobId, result) { throw new Error('Not implemented'); }
+    async fail(jobId, error) { throw new Error('Not implemented'); }
+}
+
+// Supported queue adapters
+class RabbitMQAdapter extends QueueAdapter {}
+class BullMQAdapter extends QueueAdapter {}
+class SQSAdapter extends QueueAdapter {}
+class RedisAdapter extends QueueAdapter {}
+class InMemoryAdapter extends QueueAdapter {} // For testing
+```
+
+**Go:**
+```go
+type QueueAdapter interface {
+    Enqueue(jobID string, payload map[string]interface{}) (string, error)
+    Dequeue(queueName string) (*Job, error)
+    GetStatus(jobID string) (JobStatus, error)
+    Complete(jobID string, result map[string]interface{}) error
+    Fail(jobID string, error string) error
+}
+
+// Supported queue adapters
+type RabbitMQAdapter struct{}
+type BullMQAdapter struct{}
+type SQSAdapter struct{}
+type RedisAdapter struct{}
+type InMemoryAdapter struct{} // For testing
+```
+
+**Rust:**
+```rust
+trait QueueAdapter {
+    async fn enqueue(&self, job_id: &str, payload: HashMap<String, Value>) -> Result<String, Box<dyn std::error::Error>>;
+    async fn dequeue(&self, queue_name: &str) -> Result<Option<Job>, Box<dyn std::error::Error>>;
+    async fn get_status(&self, job_id: &str) -> Result<JobStatus, Box<dyn std::error::Error>>;
+    async fn complete(&self, job_id: &str, result: HashMap<String, Value>) -> Result<(), Box<dyn std::error::Error>>;
+    async fn fail(&self, job_id: &str, error: &str) -> Result<(), Box<dyn std::error::Error>>;
+}
+
+// Supported queue adapters
+struct RabbitMQAdapter;
+struct BullMQAdapter;
+struct SQSAdapter;
+struct RedisAdapter;
+struct InMemoryAdapter; // For testing
 ```
 
 ### Tool Execution Flow
@@ -279,6 +423,7 @@ graph TD
 #### 2. **Tool Executor**
 The engine that runs tools with intelligent orchestration.
 
+**Python:**
 ```python
 class ToolExecutor:
     def execute_tool(self, tool_name, parameters):
@@ -293,6 +438,68 @@ class ToolExecutor:
         # Execute in parallel where possible
         # Handle failures and retries
         # Return composite results
+```
+
+**JavaScript:**
+```javascript
+class ToolExecutor {
+    async executeTool(toolName, parameters) {
+        // Validate parameters
+        // Check permissions
+        // Execute tool
+        // Track usage
+        // Return results
+    }
+    
+    async executeWorkflow(workflow) {
+        // Parse dependencies
+        // Execute in parallel where possible
+        // Handle failures and retries
+        // Return composite results
+    }
+}
+```
+
+**Go:**
+```go
+type ToolExecutor struct{}
+
+func (te *ToolExecutor) ExecuteTool(toolName string, parameters map[string]interface{}) (interface{}, error) {
+    // Validate parameters
+    // Check permissions
+    // Execute tool
+    // Track usage
+    // Return results
+}
+
+func (te *ToolExecutor) ExecuteWorkflow(workflow Workflow) (interface{}, error) {
+    // Parse dependencies
+    // Execute in parallel where possible
+    // Handle failures and retries
+    // Return composite results
+}
+```
+
+**Rust:**
+```rust
+struct ToolExecutor;
+
+impl ToolExecutor {
+    pub async fn execute_tool(&self, tool_name: &str, parameters: HashMap<String, Value>) -> Result<Value, Box<dyn std::error::Error>> {
+        // Validate parameters
+        // Check permissions
+        // Execute tool
+        // Track usage
+        // Return results
+    }
+    
+    pub async fn execute_workflow(&self, workflow: Workflow) -> Result<Value, Box<dyn std::error::Error>> {
+        // Parse dependencies
+        // Execute in parallel where possible
+        // Handle failures and retries
+        // Return composite results
+    }
+}
 ```
 
 ### Multi-Language Implementation Examples
