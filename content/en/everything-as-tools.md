@@ -179,77 +179,7 @@ Tools can be chained, combined, and orchestrated automatically.
 #### 1. **Tool Registry**
 The central nervous system of the architecture.
 
-**Python:**
-```python
-{
-  "tool_registry": {
-    "tools": {
-      "create_site": {
-        "version": "1.0.0",
-        "description": "Generate a new website",
-        "parameters": {...},
-        "capabilities": ["site_building", "content_generation"],
-        "estimated_cost": 0.50,
-        "estimated_time": "2m"
-      }
-    },
-    "categories": {
-      "site_building": ["create_site", "update_site", "deploy_site"],
-      "content_generation": ["generate_text", "create_image", "translate_content"],
-      "design": ["extract_branding", "apply_design_system", "generate_mockup"]
-    }
-  }
-}
-```
-
-**JavaScript:**
-```javascript
-{
-  tool_registry: {
-    tools: {
-      create_site: {
-        version: "1.0.0",
-        description: "Generate a new website",
-        parameters: {...},
-        capabilities: ["site_building", "content_generation"],
-        estimated_cost: 0.50,
-        estimated_time: "2m"
-      }
-    },
-    categories: {
-      site_building: ["create_site", "update_site", "deploy_site"],
-      content_generation: ["generate_text", "create_image", "translate_content"],
-      design: ["extract_branding", "apply_design_system", "generate_mockup"]
-    }
-  }
-}
-```
-
-**Go:**
-```go
-{
-  "tool_registry": {
-    "tools": {
-      "create_site": {
-        "version": "1.0.0",
-        "description": "Generate a new website",
-        "parameters": {...},
-        "capabilities": ["site_building", "content_generation"],
-        "estimated_cost": 0.50,
-        "estimated_time": "2m"
-      }
-    },
-    "categories": {
-      "site_building": ["create_site", "update_site", "deploy_site"],
-      "content_generation": ["generate_text", "create_image", "translate_content"],
-      "design": ["extract_branding", "apply_design_system", "generate_mockup"]
-    }
-  }
-}
-```
-
-**Rust:**
-```rust
+```json
 {
   "tool_registry": {
     "tools": {
