@@ -219,14 +219,19 @@ layout: default
                                         // Find the code block that follows this label
                                         let nextElement = label.nextElementSibling;
                                         console.log('Looking for code block after:', label.textContent);
+                                        let foundCodeBlock = false;
                                         while (nextElement && nextElement.tagName !== 'STRONG') {
-                                            console.log('Checking element:', nextElement.tagName, nextElement.className);
+                                            console.log('Checking element:', nextElement.tagName, nextElement.className, nextElement.textContent.substring(0, 50));
                                             if (nextElement.tagName === 'PRE' || nextElement.classList.contains('highlight')) {
                                                 console.log('Found code block:', nextElement.tagName, nextElement.className);
                                                 currentSection.codeBlocks.push(nextElement);
+                                                foundCodeBlock = true;
                                                 break;
                                             }
                                             nextElement = nextElement.nextElementSibling;
+                                        }
+                                        if (!foundCodeBlock) {
+                                            console.log('No code block found after:', label.textContent);
                                         }
                                     } else {
                                         // This is not a programming language label, end current section
