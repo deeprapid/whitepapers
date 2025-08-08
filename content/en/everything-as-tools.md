@@ -9,7 +9,7 @@ tags: ["AI", "APIs", "Architecture", "Future", "Innovation"]
 permalink: /en/whitepapers/everything-as-tools/
 ---
 
-# An AI-First Architecture for the Next Generation
+# AI-First Architecture
 
 ---
 
