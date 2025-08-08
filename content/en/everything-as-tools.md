@@ -6,7 +6,7 @@ date: 2025-08-08
 author: "DeepRapid AI"
 reading_time: 15
 tags: ["AI", "APIs", "Architecture", "Future", "Innovation"]
-permalink: /whitepapers/en/whitepapers/everything-as-tools/
+permalink: /en/whitepapers/everything-as-tools/
 ---
 
 # The Future of APIs: Everything as Tools
