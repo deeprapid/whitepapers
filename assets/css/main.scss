@@ -333,13 +333,13 @@ body {
   }
   
   &.btn-outline-light {
-    background: transparent;
+    background: black;
     color: white;
-    border: 1px solid white;
+    border: 1px solid black;
     
     &:hover {
-      background: white;
-      color: $primary-color;
+      background: #1a1a1a;
+      color: white;
     }
   }
 }
