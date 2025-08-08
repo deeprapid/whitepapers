@@ -543,37 +543,170 @@ The intelligent router that optimizes for AI consumption.
 
 A complete "Everything as Tools" implementation would follow this structure:
 
-```
+**Python:**
+```python
+# Project structure
 everything-as-tools/
-├── tool-registry/          # Core tool registration & discovery
-│   ├── sync_tools.py      # Synchronous tool definitions
-│   ├── async_tools.py     # Asynchronous tool definitions
-│   └── registry.py        # Main registry implementation
-├── job-engine/            # Async job orchestration
-│   ├── workers.py         # Job processing workers
-│   ├── scheduler.py       # Job scheduling logic
-│   └── monitoring.py      # Job status tracking
-├── queue-adapters/        # Queue system abstractions
-│   ├── rabbitmq.py        # RabbitMQ adapter
-│   ├── bullmq.py          # BullMQ adapter
-│   ├── sqs.py             # AWS SQS adapter
-│   └── redis.py           # Redis adapter
-├── tool-composer/         # Tool composition & chaining
-│   ├── workflow.py        # Workflow orchestration
-│   ├── dependencies.py    # Dependency resolution
-│   └── parallel.py        # Parallel execution
-├── examples/              # Multi-language examples
-│   ├── python/           # Python implementations
-│   ├── nodejs/           # Node.js implementations
-│   └── go/               # Go implementations
-├── docs/                  # Documentation & diagrams
-│   ├── architecture.md   # System architecture
-│   ├── api.md            # API documentation
-│   └── diagrams/         # Mermaid diagrams
-└── tests/                 # Integration tests
-    ├── unit/             # Unit tests
-    ├── integration/      # Integration tests
-    └── performance/      # Performance tests
+├── tool_registry/
+│   ├── __init__.py
+│   ├── registry.py          # Main registry implementation
+│   ├── sync_tools.py        # Synchronous tool definitions
+│   ├── async_tools.py       # Asynchronous tool definitions
+│   └── models.py            # Tool and result models
+├── job_engine/
+│   ├── __init__.py
+│   ├── workers.py           # Job processing workers
+│   ├── scheduler.py         # Job scheduling logic
+│   └── monitoring.py        # Job status tracking
+├── queue_adapters/
+│   ├── __init__.py
+│   ├── base.py              # Abstract adapter interface
+│   ├── rabbitmq.py          # RabbitMQ adapter
+│   ├── bullmq.py            # BullMQ adapter
+│   ├── sqs.py               # AWS SQS adapter
+│   └── redis.py             # Redis adapter
+├── tool_composer/
+│   ├── __init__.py
+│   ├── workflow.py          # Workflow orchestration
+│   ├── dependencies.py      # Dependency resolution
+│   └── parallel.py          # Parallel execution
+├── examples/
+│   ├── python/
+│   ├── nodejs/
+│   └── go/
+├── docs/
+│   ├── architecture.md
+│   ├── api.md
+│   └── diagrams/
+└── tests/
+    ├── unit/
+    ├── integration/
+    └── performance/
+```
+
+**JavaScript:**
+```javascript
+// Project structure
+everything-as-tools/
+├── tool-registry/
+│   ├── index.js             # Main registry implementation
+│   ├── sync-tools.js        # Synchronous tool definitions
+│   ├── async-tools.js       # Asynchronous tool definitions
+│   └── models.js            # Tool and result models
+├── job-engine/
+│   ├── index.js
+│   ├── workers.js           # Job processing workers
+│   ├── scheduler.js         # Job scheduling logic
+│   └── monitoring.js        # Job status tracking
+├── queue-adapters/
+│   ├── index.js
+│   ├── base.js              # Abstract adapter interface
+│   ├── rabbitmq.js          # RabbitMQ adapter
+│   ├── bullmq.js            # BullMQ adapter
+│   ├── sqs.js               # AWS SQS adapter
+│   └── redis.js             # Redis adapter
+├── tool-composer/
+│   ├── index.js
+│   ├── workflow.js          # Workflow orchestration
+│   ├── dependencies.js      # Dependency resolution
+│   └── parallel.js          # Parallel execution
+├── examples/
+│   ├── python/
+│   ├── nodejs/
+│   └── go/
+├── docs/
+│   ├── architecture.md
+│   ├── api.md
+│   └── diagrams/
+└── tests/
+    ├── unit/
+    ├── integration/
+    └── performance/
+```
+
+**Go:**
+```go
+// Project structure
+everything-as-tools/
+├── tool-registry/
+│   ├── registry.go          # Main registry implementation
+│   ├── sync-tools.go        # Synchronous tool definitions
+│   ├── async-tools.go       # Asynchronous tool definitions
+│   └── models.go            # Tool and result models
+├── job-engine/
+│   ├── workers.go           # Job processing workers
+│   ├── scheduler.go         # Job scheduling logic
+│   └── monitoring.go        # Job status tracking
+├── queue-adapters/
+│   ├── base.go              # Abstract adapter interface
+│   ├── rabbitmq.go          # RabbitMQ adapter
+│   ├── bullmq.go            # BullMQ adapter
+│   ├── sqs.go               # AWS SQS adapter
+│   └── redis.go             # Redis adapter
+├── tool-composer/
+│   ├── workflow.go          # Workflow orchestration
+│   ├── dependencies.go      # Dependency resolution
+│   └── parallel.go          # Parallel execution
+├── examples/
+│   ├── python/
+│   ├── nodejs/
+│   └── go/
+├── docs/
+│   ├── architecture.md
+│   ├── api.md
+│   └── diagrams/
+└── tests/
+    ├── unit/
+    ├── integration/
+    └── performance/
+```
+
+**Rust:**
+```rust
+// Project structure
+everything-as-tools/
+├── tool-registry/
+│   ├── src/
+│   │   ├── lib.rs           # Main registry implementation
+│   │   ├── sync_tools.rs    # Synchronous tool definitions
+│   │   ├── async_tools.rs   # Asynchronous tool definitions
+│   │   └── models.rs        # Tool and result models
+│   └── Cargo.toml
+├── job-engine/
+│   ├── src/
+│   │   ├── lib.rs
+│   │   ├── workers.rs       # Job processing workers
+│   │   ├── scheduler.rs     # Job scheduling logic
+│   │   └── monitoring.rs    # Job status tracking
+│   └── Cargo.toml
+├── queue-adapters/
+│   ├── src/
+│   │   ├── lib.rs
+│   │   ├── base.rs          # Abstract adapter interface
+│   │   ├── rabbitmq.rs      # RabbitMQ adapter
+│   │   ├── bullmq.rs        # BullMQ adapter
+│   │   ├── sqs.rs           # AWS SQS adapter
+│   │   └── redis.rs         # Redis adapter
+│   └── Cargo.toml
+├── tool-composer/
+│   ├── src/
+│   │   ├── lib.rs
+│   │   ├── workflow.rs      # Workflow orchestration
+│   │   ├── dependencies.rs  # Dependency resolution
+│   │   └── parallel.rs      # Parallel execution
+│   └── Cargo.toml
+├── examples/
+│   ├── python/
+│   ├── nodejs/
+│   └── go/
+├── docs/
+│   ├── architecture.md
+│   ├── api.md
+│   └── diagrams/
+└── tests/
+    ├── unit/
+    ├── integration/
+    └── performance/
 ```
 
 ### Queue System Benefits
