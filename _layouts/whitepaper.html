@@ -285,8 +285,11 @@ layout: default
                                     const codeElement = codeBlock.querySelector('code');
                                     if (codeElement) {
                                         const text = codeElement.textContent.trim();
+                                        // Check for JSON structure with common tool-related keys
                                         return text.startsWith('{') && text.endsWith('}') && 
-                                               (text.includes('"tool"') || text.includes('"description"') || text.includes('"parameters"'));
+                                               (text.includes('"tool"') || text.includes('"description"') || 
+                                                text.includes('"parameters"') || text.includes('"workflow"') ||
+                                                text.includes('"capabilities"') || text.includes('"ai_gateway"'));
                                     }
                                     return false;
                                 });

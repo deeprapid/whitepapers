@@ -668,8 +668,7 @@ class ToolExecutor:
 
 ### Multi-Language Implementation Examples
 
-#### Python Implementation
-
+**Python:**
 ```python
 # Tool registration
 tool_registry = ToolRegistry()
@@ -703,8 +702,7 @@ result = await tool_registry.execute_tool("generate_blog_content", {
 })
 ```
 
-#### Node.js Implementation
-
+**JavaScript:**
 ```javascript
 // Tool registry
 const toolRegistry = new ToolRegistry();
@@ -741,8 +739,7 @@ const result = await toolRegistry.executeTool("generateBlogContent", {
 });
 ```
 
-#### Go Implementation
-
+**Go:**
 ```go
 // Tool registry
 type ToolRegistry struct {
