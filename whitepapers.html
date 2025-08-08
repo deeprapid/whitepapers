@@ -32,7 +32,7 @@ permalink: /en/whitepapers/
                 {% endfor %}
             </div>
             {% endif %}
-            <a href="{{ whitepaper.url }}" class="btn btn-primary" style="margin-top: 1rem;">Read Whitepaper</a>
+            <a href="{{ whitepaper.url | relative_url }}" class="btn btn-primary" style="margin-top: 1rem;">Read Whitepaper</a>
         </div>
         {% endfor %}
     </div>
