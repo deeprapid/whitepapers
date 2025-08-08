@@ -331,7 +331,7 @@ function initMermaid() {
             }
         });
         
-        // Process all mermaid diagrams
+        // Process all mermaid diagrams with language-mermaid class
         document.querySelectorAll('pre code.language-mermaid').forEach(block => {
             const pre = block.parentElement;
             const diagramDiv = document.createElement('div');
@@ -340,6 +340,20 @@ function initMermaid() {
             
             // Replace the code block with the diagram
             pre.parentNode.replaceChild(diagramDiv, pre);
+        });
+        
+        // Also look for any code blocks that contain mermaid syntax
+        document.querySelectorAll('pre code').forEach(block => {
+            const content = block.textContent.trim();
+            if (content.startsWith('graph') || content.startsWith('flowchart') || content.startsWith('sequenceDiagram')) {
+                const pre = block.parentElement;
+                const diagramDiv = document.createElement('div');
+                diagramDiv.className = 'mermaid';
+                diagramDiv.textContent = content;
+                
+                // Replace the code block with the diagram
+                pre.parentNode.replaceChild(diagramDiv, pre);
+            }
         });
     }
 }
