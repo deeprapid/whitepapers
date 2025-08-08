@@ -17,7 +17,7 @@ permalink: /en/whitepapers/everything-as-tools/
 
 ---
 
-## Executive Summary
+## Summary
 
 We stand at the precipice of a fundamental shift in how we design and consume APIs. The traditional REST-based architecture, while functional, creates friction for both AI systems and human developers. This whitepaper presents a revolutionary approach: **Everything as Tools** - an AI-first, UI-compatible architecture that reimagines every API operation as a discoverable, composable tool that serves both AI systems and human interfaces seamlessly.
 
