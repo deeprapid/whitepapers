@@ -26,7 +26,7 @@ function initNavigation() {
     
     // Close mobile menu when clicking outside
     document.addEventListener('click', function(event) {
-        if (!navbar.contains(event.target)) {
+        if (navbar && !navbar.contains(event.target)) {
             navbarMenu.classList.remove('active');
             navbarToggle.classList.remove('active');
         }
@@ -317,9 +317,13 @@ function trackSearch(query) {
 
 // Mermaid diagram initialization
 function initMermaid() {
+    console.log('Initializing Mermaid...');
+    
     if (typeof mermaid !== 'undefined') {
+        console.log('Mermaid library found');
+        
         mermaid.initialize({
-            startOnLoad: true,
+            startOnLoad: false, // We'll manually trigger rendering
             theme: 'default',
             flowchart: {
                 useMaxWidth: true,
@@ -332,7 +336,11 @@ function initMermaid() {
         });
         
         // Process all mermaid diagrams with language-mermaid class
-        document.querySelectorAll('pre code.language-mermaid').forEach(block => {
+        const mermaidBlocks = document.querySelectorAll('pre code.language-mermaid');
+        console.log('Found', mermaidBlocks.length, 'mermaid code blocks');
+        
+        mermaidBlocks.forEach((block, index) => {
+            console.log('Processing mermaid block', index + 1);
             const pre = block.parentElement;
             const diagramDiv = document.createElement('div');
             diagramDiv.className = 'mermaid';
@@ -343,9 +351,13 @@ function initMermaid() {
         });
         
         // Also look for any code blocks that contain mermaid syntax
-        document.querySelectorAll('pre code').forEach(block => {
+        const allCodeBlocks = document.querySelectorAll('pre code');
+        console.log('Found', allCodeBlocks.length, 'total code blocks');
+        
+        allCodeBlocks.forEach((block, index) => {
             const content = block.textContent.trim();
             if (content.startsWith('graph') || content.startsWith('flowchart') || content.startsWith('sequenceDiagram')) {
+                console.log('Found mermaid syntax in block', index + 1);
                 const pre = block.parentElement;
                 const diagramDiv = document.createElement('div');
                 diagramDiv.className = 'mermaid';
@@ -355,6 +367,12 @@ function initMermaid() {
                 pre.parentNode.replaceChild(diagramDiv, pre);
             }
         });
+        
+        // Manually trigger mermaid rendering
+        console.log('Triggering mermaid.init()');
+        mermaid.init();
+    } else {
+        console.log('Mermaid library not found');
     }
 }
 
