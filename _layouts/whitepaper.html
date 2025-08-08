@@ -207,7 +207,14 @@ layout: default
                                     // Check if this is a programming language label
                                     const languageName = label.textContent.replace(':', '').trim();
                                     if (['Python', 'JavaScript', 'Go', 'Rust'].includes(languageName)) {
-                                        if (!currentSection) {
+                                        // Check if this is the start of a new section (Python is always first)
+                                        if (languageName === 'Python') {
+                                            // End the previous section if it exists
+                                            if (currentSection && currentSection.codeBlocks.length >= 2) {
+                                                console.log('Creating tabs for section starting with:', sectionStart.textContent, 'with', currentSection.codeBlocks.length, 'code blocks');
+                                                codeSections.push(currentSection);
+                                            }
+                                            
                                             // Start a new section
                                             currentSection = {
                                                 title: label,
@@ -216,45 +223,48 @@ layout: default
                                             };
                                             sectionStart = label;
                                         }
-                                        currentSection.labels.push(label);
                                         
-                                        // Find the code block that follows this label
-                                        console.log('Looking for code block after:', label.textContent);
-                                        let foundCodeBlock = false;
-                                        
-                                        // Look for code blocks that come after this label in the document
-                                        let currentElement = label;
-                                        for (let j = 0; j < 100; j++) { // Much larger search range
-                                            currentElement = currentElement.nextElementSibling;
-                                            if (!currentElement) {
-                                                // If no next sibling, try to go up to parent and then to next sibling
-                                                const parent = label.parentElement;
-                                                if (parent && parent.nextElementSibling) {
-                                                    currentElement = parent.nextElementSibling;
-                                                } else {
+                                        if (currentSection) {
+                                            currentSection.labels.push(label);
+                                            
+                                            // Find the code block that follows this label
+                                            console.log('Looking for code block after:', label.textContent);
+                                            let foundCodeBlock = false;
+                                            
+                                            // Look for code blocks that come after this label in the document
+                                            let currentElement = label;
+                                            for (let j = 0; j < 100; j++) { // Much larger search range
+                                                currentElement = currentElement.nextElementSibling;
+                                                if (!currentElement) {
+                                                    // If no next sibling, try to go up to parent and then to next sibling
+                                                    const parent = label.parentElement;
+                                                    if (parent && parent.nextElementSibling) {
+                                                        currentElement = parent.nextElementSibling;
+                                                    } else {
+                                                        break;
+                                                    }
+                                                }
+                                                
+                                                console.log('Checking element:', currentElement.tagName, currentElement.className, currentElement.textContent.substring(0, 50));
+                                                
+                                                if (currentElement.tagName === 'PRE' || currentElement.classList.contains('highlight') || 
+                                                    (currentElement.tagName === 'DIV' && currentElement.classList.contains('highlighter-rouge'))) {
+                                                    console.log('Found code block:', currentElement.tagName, currentElement.className);
+                                                    currentSection.codeBlocks.push(currentElement);
+                                                    foundCodeBlock = true;
+                                                    break;
+                                                }
+                                                
+                                                // If we hit another language label, stop looking
+                                                if (currentElement.tagName === 'STRONG' && currentElement.textContent.includes(':')) {
+                                                    console.log('Hit another language label, stopping search');
                                                     break;
                                                 }
                                             }
                                             
-                                            console.log('Checking element:', currentElement.tagName, currentElement.className, currentElement.textContent.substring(0, 50));
-                                            
-                                            if (currentElement.tagName === 'PRE' || currentElement.classList.contains('highlight') || 
-                                                (currentElement.tagName === 'DIV' && currentElement.classList.contains('highlighter-rouge'))) {
-                                                console.log('Found code block:', currentElement.tagName, currentElement.className);
-                                                currentSection.codeBlocks.push(currentElement);
-                                                foundCodeBlock = true;
-                                                break;
+                                            if (!foundCodeBlock) {
+                                                console.log('No code block found after:', label.textContent);
                                             }
-                                            
-                                            // If we hit another language label, stop looking
-                                            if (currentElement.tagName === 'STRONG' && currentElement.textContent.includes(':')) {
-                                                console.log('Hit another language label, stopping search');
-                                                break;
-                                            }
-                                        }
-                                        
-                                        if (!foundCodeBlock) {
-                                            console.log('No code block found after:', label.textContent);
                                         }
                                     } else {
                                         // This is not a programming language label, end current section
