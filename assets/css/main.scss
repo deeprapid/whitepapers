@@ -892,6 +892,38 @@ body {
   }
 }
 
+// Code tabs
+.code-tabs {
+  margin: 2rem 0;
+  
+  .tab-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    
+    .tab-button {
+      padding: 0.5rem 1rem;
+      border: 1px solid $border-color;
+      background: white;
+      color: $text-secondary;
+      border-radius: 0.25rem 0.25rem 0 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: $background-dark;
+        color: $text-primary;
+      }
+      
+      &.active {
+        background: $primary-color;
+        color: white;
+        border-color: $primary-color;
+      }
+    }
+  }
+}
+
 // Utility classes
 .container {
   @include container;

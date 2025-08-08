@@ -77,6 +77,93 @@ layout: default
                         {{ content }}
                     </div>
                     
+                    <!-- Language Tabs for Code Examples -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Add language tabs to code blocks
+                            const codeBlocks = document.querySelectorAll('pre code');
+                            codeBlocks.forEach(function(codeBlock) {
+                                const pre = codeBlock.parentElement;
+                                const language = codeBlock.className.replace('language-', '');
+                                
+                                                    // Check if this is part of a multi-language example
+                                    const prevElement = pre.previousElementSibling;
+                                    if (prevElement && prevElement.textContent.includes('Python:') || 
+                                        prevElement && prevElement.textContent.includes('JavaScript:') ||
+                                        prevElement && prevElement.textContent.includes('Go:') ||
+                                        prevElement && prevElement.textContent.includes('Rust:')) {
+                                    
+                                    // Create tab container
+                                    const tabContainer = document.createElement('div');
+                                    tabContainer.className = 'code-tabs';
+                                    
+                                    // Create tab buttons
+                                    const tabButtons = document.createElement('div');
+                                    tabButtons.className = 'tab-buttons';
+                                    
+                                    const pythonTab = document.createElement('button');
+                                    pythonTab.className = 'tab-button active';
+                                    pythonTab.textContent = 'Python';
+                                    pythonTab.onclick = function() { switchTab(this, 'python'); };
+                                    
+                                    const javascriptTab = document.createElement('button');
+                                    javascriptTab.className = 'tab-button';
+                                    javascriptTab.textContent = 'JavaScript';
+                                    javascriptTab.onclick = function() { switchTab(this, 'javascript'); };
+                                    
+                                    const goTab = document.createElement('button');
+                                    goTab.className = 'tab-button';
+                                    goTab.textContent = 'Go';
+                                    goTab.onclick = function() { switchTab(this, 'go'); };
+                                    
+                                    const rustTab = document.createElement('button');
+                                    rustTab.className = 'tab-button';
+                                    rustTab.textContent = 'Rust';
+                                    rustTab.onclick = function() { switchTab(this, 'rust'); };
+                                    
+                                    tabButtons.appendChild(pythonTab);
+                                    tabButtons.appendChild(javascriptTab);
+                                    tabButtons.appendChild(goTab);
+                                    tabButtons.appendChild(rustTab);
+                                    tabContainer.appendChild(tabButtons);
+                                    
+                                    // Insert tab container before the code block
+                                    pre.parentNode.insertBefore(tabContainer, pre);
+                                }
+                            });
+                            
+                            function switchTab(button, language) {
+                                // Remove active class from all buttons
+                                const buttons = button.parentElement.querySelectorAll('.tab-button');
+                                buttons.forEach(btn => btn.classList.remove('active'));
+                                
+                                // Add active class to clicked button
+                                button.classList.add('active');
+                                
+                                // Show/hide code blocks based on language
+                                const codeBlocks = button.parentElement.parentElement.querySelectorAll('pre code');
+                                codeBlocks.forEach(function(codeBlock) {
+                                    const pre = codeBlock.parentElement;
+                                    if (codeBlock.className.includes(language)) {
+                                        pre.style.display = 'block';
+                                    } else {
+                                        pre.style.display = 'none';
+                                    }
+                                });
+                                
+                                // Also show/hide the language labels
+                                const languageLabels = button.parentElement.parentElement.querySelectorAll('h4');
+                                languageLabels.forEach(function(label) {
+                                    if (label.textContent.includes(language.charAt(0).toUpperCase() + language.slice(1) + ':')) {
+                                        label.style.display = 'block';
+                                    } else if (label.textContent.includes(':')) {
+                                        label.style.display = 'none';
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+                    
                     <!-- Whitepaper Footer -->
                     <footer class="whitepaper-footer">
                         <div class="share-buttons">
