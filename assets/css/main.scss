@@ -1005,7 +1005,7 @@ body {
 }
 
 // Hide language labels by default for multi-language sections
-h4:not(:first-of-type) {
+strong:not(:first-of-type) {
   display: none;
 }
 

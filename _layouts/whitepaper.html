@@ -182,8 +182,8 @@ layout: default
                             let currentSection = null;
                             
                             // Group code blocks by their sections
-                            document.querySelectorAll('h4, pre code').forEach(function(element) {
-                                if (element.tagName === 'H4' && element.textContent.includes(':')) {
+                            document.querySelectorAll('strong, pre code').forEach(function(element) {
+                                if (element.tagName === 'STRONG' && element.textContent.includes(':')) {
                                     // Start a new section
                                     if (currentSection) {
                                         codeSections.push(currentSection);
@@ -238,7 +238,7 @@ layout: default
                                     });
                                     
                                     // Hide all language labels except the first
-                                    const labels = section.title.parentNode.querySelectorAll('h4');
+                                    const labels = section.title.parentNode.querySelectorAll('strong');
                                     labels.forEach(function(label, index) {
                                         if (index > 0) {
                                             label.style.display = 'none';
@@ -266,7 +266,7 @@ layout: default
                                 });
                                 
                                 // Show/hide language labels
-                                const labels = section.title.parentNode.querySelectorAll('h4');
+                                const labels = section.title.parentNode.querySelectorAll('strong');
                                 const languageName = language.charAt(0).toUpperCase() + language.slice(1);
                                 labels.forEach(function(label) {
                                     if (label.textContent.includes(languageName + ':')) {
