@@ -442,13 +442,12 @@ body {
     padding: 3rem 0;
     
     .content-wrapper {
-      display: grid;
-      grid-template-columns: 1fr 250px;
-      gap: 2rem;
+      display: flex;
+      gap: 3rem;
       
       @media (max-width: $breakpoint-lg) {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+        flex-direction: column;
+        gap: 2rem;
       }
     }
     
@@ -456,6 +455,7 @@ body {
       position: sticky;
       top: 100px;
       height: fit-content;
+      flex: 0 0 250px;
       
       .toc-container {
         background: white;
@@ -512,7 +512,8 @@ body {
     }
     
     .content-main {
-      max-width: 100%;
+      flex: 1;
+      min-width: 0;
       
       .content-body {
         font-size: 1.125rem;
