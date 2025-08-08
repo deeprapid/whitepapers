@@ -188,8 +188,11 @@ layout: default
                             const codeSections = [];
                             let currentSection = null;
                             
-                            // Group code blocks by their sections
-                            document.querySelectorAll('strong, pre code').forEach(function(element) {
+                            // First pass: find all language labels and group them
+                            const allElements = document.querySelectorAll('strong, pre code');
+                            for (let i = 0; i < allElements.length; i++) {
+                                const element = allElements[i];
+                                
                                 if (element.tagName === 'STRONG' && element.textContent.includes(':')) {
                                     // Start a new section
                                     if (currentSection) {
@@ -197,21 +200,34 @@ layout: default
                                     }
                                     currentSection = {
                                         title: element,
-                                        codeBlocks: []
+                                        codeBlocks: [],
+                                        labels: []
                                     };
+                                    currentSection.labels.push(element);
                                 } else if (element.tagName === 'CODE' && currentSection) {
                                     currentSection.codeBlocks.push(element.parentElement);
                                 }
-                            });
+                            }
                             
                             // Add the last section
                             if (currentSection) {
                                 codeSections.push(currentSection);
                             }
                             
+                            // Second pass: find all labels for each section
+                            codeSections.forEach(function(section) {
+                                let nextElement = section.title.nextElementSibling;
+                                while (nextElement && nextElement.tagName === 'STRONG' && nextElement.textContent.includes(':')) {
+                                    section.labels.push(nextElement);
+                                    nextElement = nextElement.nextElementSibling;
+                                }
+                            });
+                            
                             // Process each multi-language section
                             codeSections.forEach(function(section) {
                                 if (section.codeBlocks.length >= 2) {
+                                    console.log('Creating tabs for section:', section.title.textContent, 'with', section.codeBlocks.length, 'code blocks');
+                                    
                                     // Create tab container
                                     const tabContainer = document.createElement('div');
                                     tabContainer.className = 'code-tabs';
@@ -245,8 +261,7 @@ layout: default
                                     });
                                     
                                     // Hide all language labels except the first
-                                    const labels = section.title.parentNode.querySelectorAll('strong');
-                                    labels.forEach(function(label, index) {
+                                    section.labels.forEach(function(label, index) {
                                         if (index > 0) {
                                             label.style.display = 'none';
                                         }
@@ -255,6 +270,8 @@ layout: default
                             });
                             
                             function switchTab(button, language, section) {
+                                console.log('Switching to', language, 'for section:', section.title.textContent);
+                                
                                 // Remove active class from all buttons in this section
                                 const buttons = button.parentElement.querySelectorAll('.tab-button');
                                 buttons.forEach(btn => btn.classList.remove('active'));
@@ -273,9 +290,8 @@ layout: default
                                 });
                                 
                                 // Show/hide language labels
-                                const labels = section.title.parentNode.querySelectorAll('strong');
                                 const languageName = language.charAt(0).toUpperCase() + language.slice(1);
-                                labels.forEach(function(label) {
+                                section.labels.forEach(function(label) {
                                     if (label.textContent.includes(languageName + ':')) {
                                         label.style.display = 'block';
                                     } else if (label.textContent.includes(':')) {
