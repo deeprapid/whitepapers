@@ -130,6 +130,20 @@
             inputSelector: '#search-input',
             debug: false
         });
+        
+        // Initialize Mermaid after library loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof mermaid !== 'undefined') {
+                initMermaid();
+            } else {
+                // Wait for Mermaid to load
+                window.addEventListener('load', function() {
+                    if (typeof mermaid !== 'undefined') {
+                        initMermaid();
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html> 

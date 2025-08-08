@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     initScrollEffects();
     initCodeHighlighting();
-    initMermaid();
     initLanguageSelector();
 });
 
