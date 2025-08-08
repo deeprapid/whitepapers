@@ -2,7 +2,7 @@
 
 > **Thought leadership and technical insights on the future of AI-first software architecture**
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-blue?logo=github)](https://deeprapidai.github.io/whitepapers/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-blue?logo=github)](https://deeprapid.github.io/whitepapers/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Contributing](https://img.shields.io/badge/Contributing-Welcome-brightgreen.svg)](CONTRIBUTING.md)
 
@@ -12,7 +12,7 @@ This repository contains technical whitepapers and thought leadership content fr
 
 ## 🚀 Live Site
 
-Visit our live site: **[https://deeprapidai.github.io/whitepapers/](https://deeprapidai.github.io/whitepapers/)**
+Visit our live site: **[https://deeprapid.github.io/whitepapers/](https://deeprapid.github.io/whitepapers/)**
 
 ## 📖 Available Whitepapers
 
