@@ -443,11 +443,12 @@ body {
     
     .content-wrapper {
       display: grid;
-      grid-template-columns: 1fr 300px;
-      gap: 3rem;
+      grid-template-columns: 1fr 250px;
+      gap: 2rem;
       
       @media (max-width: $breakpoint-lg) {
         grid-template-columns: 1fr;
+        gap: 1rem;
       }
     }
     
@@ -460,7 +461,7 @@ body {
         background: white;
         border: 1px solid $border-color;
         border-radius: 0.5rem;
-        padding: 1.5rem;
+        padding: 1rem;
         
         .toc-title {
           font-size: 1.125rem;
@@ -511,10 +512,13 @@ body {
     }
     
     .content-main {
+      max-width: 100%;
+      
       .content-body {
         font-size: 1.125rem;
         line-height: 1.8;
         color: $text-primary;
+        max-width: 100%;
         
         h1, h2, h3, h4, h5, h6 {
           margin-top: 2rem;
