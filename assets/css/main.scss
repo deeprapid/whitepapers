@@ -462,12 +462,50 @@ body {
         border: 1px solid $border-color;
         border-radius: 0.5rem;
         padding: 1rem;
+        max-height: calc(100vh - 150px);
+        overflow-y: auto;
+        
+        // Custom scrollbar
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 3px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 3px;
+          
+          &:hover {
+            background: #a8a8a8;
+          }
+        }
         
         .toc-title {
           font-size: 1.125rem;
           font-weight: 600;
           margin-bottom: 1rem;
           color: $text-primary;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          
+          .toc-toggle-all {
+            font-size: 0.75rem;
+            color: $text-secondary;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            transition: all 0.2s ease;
+            
+            &:hover {
+              background: $background-dark;
+              color: $primary-color;
+            }
+          }
         }
         
         .toc-nav {
@@ -494,16 +532,44 @@ body {
               &.toc-h2 {
                 font-weight: 600;
                 padding-left: 0.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                
+                .toc-toggle {
+                  font-size: 0.75rem;
+                  color: $text-secondary;
+                  cursor: pointer;
+                  transition: transform 0.2s ease;
+                  
+                  &.expanded {
+                    transform: rotate(90deg);
+                  }
+                }
               }
               
               &.toc-h3 {
                 font-size: 0.875rem;
                 padding-left: 1.5rem;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                
+                &.expanded {
+                  max-height: 200px;
+                }
               }
               
               &.toc-h4 {
                 font-size: 0.75rem;
                 padding-left: 2.5rem;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                
+                &.expanded {
+                  max-height: 200px;
+                }
               }
             }
           }
@@ -900,15 +966,18 @@ body {
     display: flex;
     gap: 0.5rem;
     margin-bottom: 1rem;
+    border-bottom: 1px solid $border-color;
     
     .tab-button {
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.5rem;
       border: 1px solid $border-color;
+      border-bottom: none;
       background: white;
       color: $text-secondary;
       border-radius: 0.25rem 0.25rem 0 0;
       cursor: pointer;
       transition: all 0.2s ease;
+      font-weight: 500;
       
       &:hover {
         background: $background-dark;
@@ -919,9 +988,25 @@ body {
         background: $primary-color;
         color: white;
         border-color: $primary-color;
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -1px;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: white;
+        }
       }
     }
   }
+}
+
+// Hide language labels by default for multi-language sections
+h4:not(:first-of-type) {
+  display: none;
 }
 
 // Utility classes

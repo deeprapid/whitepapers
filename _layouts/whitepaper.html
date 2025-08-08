@@ -77,22 +77,134 @@ layout: default
                         {{ content }}
                     </div>
                     
+                                        <!-- Table of Contents Functionality -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Initialize TOC functionality
+                            initTOC();
+                        });
+                        
+                        function initTOC() {
+                            const tocContainer = document.querySelector('.toc-container');
+                            if (!tocContainer) return;
+                            
+                            const tocTitle = tocContainer.querySelector('.toc-title');
+                            const tocNav = tocContainer.querySelector('.toc-nav');
+                            
+                            // Add toggle all button
+                            const toggleAllBtn = document.createElement('span');
+                            toggleAllBtn.className = 'toc-toggle-all';
+                            toggleAllBtn.textContent = 'Collapse All';
+                            toggleAllBtn.onclick = toggleAllSections;
+                            tocTitle.appendChild(toggleAllBtn);
+                            
+                            // Add toggle buttons to h2 links
+                            const h2Links = tocNav.querySelectorAll('.toc-h2');
+                            h2Links.forEach(function(h2Link) {
+                                const toggleBtn = document.createElement('span');
+                                toggleBtn.className = 'toc-toggle';
+                                toggleBtn.innerHTML = '▶';
+                                toggleBtn.onclick = function(e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    toggleSection(h2Link);
+                                };
+                                h2Link.appendChild(toggleBtn);
+                            });
+                            
+                            // Initially collapse all sections
+                            collapseAllSections();
+                            
+                            function toggleSection(h2Link) {
+                                const toggleBtn = h2Link.querySelector('.toc-toggle');
+                                const isExpanded = toggleBtn.classList.contains('expanded');
+                                
+                                if (isExpanded) {
+                                    collapseSection(h2Link);
+                                } else {
+                                    expandSection(h2Link);
+                                }
+                            }
+                            
+                            function expandSection(h2Link) {
+                                const toggleBtn = h2Link.querySelector('.toc-toggle');
+                                toggleBtn.classList.add('expanded');
+                                
+                                // Find and expand all child links
+                                let nextElement = h2Link.nextElementSibling;
+                                while (nextElement && (nextElement.classList.contains('toc-h3') || nextElement.classList.contains('toc-h4'))) {
+                                    nextElement.classList.add('expanded');
+                                    nextElement = nextElement.nextElementSibling;
+                                }
+                            }
+                            
+                            function collapseSection(h2Link) {
+                                const toggleBtn = h2Link.querySelector('.toc-toggle');
+                                toggleBtn.classList.remove('expanded');
+                                
+                                // Find and collapse all child links
+                                let nextElement = h2Link.nextElementSibling;
+                                while (nextElement && (nextElement.classList.contains('toc-h3') || nextElement.classList.contains('toc-h4'))) {
+                                    nextElement.classList.remove('expanded');
+                                    nextElement = nextElement.nextElementSibling;
+                                }
+                            }
+                            
+                            function expandAllSections() {
+                                h2Links.forEach(expandSection);
+                                toggleAllBtn.textContent = 'Collapse All';
+                            }
+                            
+                            function collapseAllSections() {
+                                h2Links.forEach(collapseSection);
+                                toggleAllBtn.textContent = 'Expand All';
+                            }
+                            
+                            function toggleAllSections() {
+                                const isAllExpanded = Array.from(h2Links).every(h2Link => 
+                                    h2Link.querySelector('.toc-toggle').classList.contains('expanded')
+                                );
+                                
+                                if (isAllExpanded) {
+                                    collapseAllSections();
+                                } else {
+                                    expandAllSections();
+                                }
+                            }
+                        }
+                    </script>
+                    
                     <!-- Language Tabs for Code Examples -->
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
-                            // Add language tabs to code blocks
-                            const codeBlocks = document.querySelectorAll('pre code');
-                            codeBlocks.forEach(function(codeBlock) {
-                                const pre = codeBlock.parentElement;
-                                const language = codeBlock.className.replace('language-', '');
-                                
-                                                    // Check if this is part of a multi-language example
-                                    const prevElement = pre.previousElementSibling;
-                                    if (prevElement && prevElement.textContent.includes('Python:') || 
-                                        prevElement && prevElement.textContent.includes('JavaScript:') ||
-                                        prevElement && prevElement.textContent.includes('Go:') ||
-                                        prevElement && prevElement.textContent.includes('Rust:')) {
-                                    
+                            // Find all multi-language code sections
+                            const codeSections = [];
+                            let currentSection = null;
+                            
+                            // Group code blocks by their sections
+                            document.querySelectorAll('h4, pre code').forEach(function(element) {
+                                if (element.tagName === 'H4' && element.textContent.includes(':')) {
+                                    // Start a new section
+                                    if (currentSection) {
+                                        codeSections.push(currentSection);
+                                    }
+                                    currentSection = {
+                                        title: element,
+                                        codeBlocks: []
+                                    };
+                                } else if (element.tagName === 'CODE' && currentSection) {
+                                    currentSection.codeBlocks.push(element.parentElement);
+                                }
+                            });
+                            
+                            // Add the last section
+                            if (currentSection) {
+                                codeSections.push(currentSection);
+                            }
+                            
+                            // Process each multi-language section
+                            codeSections.forEach(function(section) {
+                                if (section.codeBlocks.length >= 2) {
                                     // Create tab container
                                     const tabContainer = document.createElement('div');
                                     tabContainer.className = 'code-tabs';
@@ -101,39 +213,42 @@ layout: default
                                     const tabButtons = document.createElement('div');
                                     tabButtons.className = 'tab-buttons';
                                     
-                                    const pythonTab = document.createElement('button');
-                                    pythonTab.className = 'tab-button active';
-                                    pythonTab.textContent = 'Python';
-                                    pythonTab.onclick = function() { switchTab(this, 'python'); };
+                                    const languages = ['python', 'javascript', 'go', 'rust'];
+                                    const languageNames = ['Python', 'JavaScript', 'Go', 'Rust'];
                                     
-                                    const javascriptTab = document.createElement('button');
-                                    javascriptTab.className = 'tab-button';
-                                    javascriptTab.textContent = 'JavaScript';
-                                    javascriptTab.onclick = function() { switchTab(this, 'javascript'); };
+                                    languages.forEach(function(lang, index) {
+                                        const tab = document.createElement('button');
+                                        tab.className = 'tab-button' + (index === 0 ? ' active' : '');
+                                        tab.textContent = languageNames[index];
+                                        tab.onclick = function() { switchTab(this, lang, section); };
+                                        tabButtons.appendChild(tab);
+                                    });
                                     
-                                    const goTab = document.createElement('button');
-                                    goTab.className = 'tab-button';
-                                    goTab.textContent = 'Go';
-                                    goTab.onclick = function() { switchTab(this, 'go'); };
-                                    
-                                    const rustTab = document.createElement('button');
-                                    rustTab.className = 'tab-button';
-                                    rustTab.textContent = 'Rust';
-                                    rustTab.onclick = function() { switchTab(this, 'rust'); };
-                                    
-                                    tabButtons.appendChild(pythonTab);
-                                    tabButtons.appendChild(javascriptTab);
-                                    tabButtons.appendChild(goTab);
-                                    tabButtons.appendChild(rustTab);
                                     tabContainer.appendChild(tabButtons);
                                     
-                                    // Insert tab container before the code block
-                                    pre.parentNode.insertBefore(tabContainer, pre);
+                                    // Insert tab container before the first code block
+                                    const firstCodeBlock = section.codeBlocks[0];
+                                    firstCodeBlock.parentNode.insertBefore(tabContainer, firstCodeBlock);
+                                    
+                                    // Initially hide all but the first code block and label
+                                    section.codeBlocks.forEach(function(codeBlock, index) {
+                                        if (index > 0) {
+                                            codeBlock.style.display = 'none';
+                                        }
+                                    });
+                                    
+                                    // Hide all language labels except the first
+                                    const labels = section.title.parentNode.querySelectorAll('h4');
+                                    labels.forEach(function(label, index) {
+                                        if (index > 0) {
+                                            label.style.display = 'none';
+                                        }
+                                    });
                                 }
                             });
                             
-                            function switchTab(button, language) {
-                                // Remove active class from all buttons
+                            function switchTab(button, language, section) {
+                                // Remove active class from all buttons in this section
                                 const buttons = button.parentElement.querySelectorAll('.tab-button');
                                 buttons.forEach(btn => btn.classList.remove('active'));
                                 
@@ -141,20 +256,20 @@ layout: default
                                 button.classList.add('active');
                                 
                                 // Show/hide code blocks based on language
-                                const codeBlocks = button.parentElement.parentElement.querySelectorAll('pre code');
-                                codeBlocks.forEach(function(codeBlock) {
-                                    const pre = codeBlock.parentElement;
-                                    if (codeBlock.className.includes(language)) {
-                                        pre.style.display = 'block';
+                                section.codeBlocks.forEach(function(codeBlock) {
+                                    const codeElement = codeBlock.querySelector('code');
+                                    if (codeElement.className.includes(language)) {
+                                        codeBlock.style.display = 'block';
                                     } else {
-                                        pre.style.display = 'none';
+                                        codeBlock.style.display = 'none';
                                     }
                                 });
                                 
-                                // Also show/hide the language labels
-                                const languageLabels = button.parentElement.parentElement.querySelectorAll('h4');
-                                languageLabels.forEach(function(label) {
-                                    if (label.textContent.includes(language.charAt(0).toUpperCase() + language.slice(1) + ':')) {
+                                // Show/hide language labels
+                                const labels = section.title.parentNode.querySelectorAll('h4');
+                                const languageName = language.charAt(0).toUpperCase() + language.slice(1);
+                                labels.forEach(function(label) {
+                                    if (label.textContent.includes(languageName + ':')) {
                                         label.style.display = 'block';
                                     } else if (label.textContent.includes(':')) {
                                         label.style.display = 'none';

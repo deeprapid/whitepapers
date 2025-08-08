@@ -1,7 +1,7 @@
 ---
 layout: whitepaper
 title: "Everything as Tools: The Future of AI-First APIs"
-subtitle: "A revolutionary approach to API architecture where every operation is a discoverable, composable tool designed for AI consumption"
+subtitle: "A revolutionary approach to API architecture where every operation is a discoverable, composable tool for AI"
 date: 2025-08-08
 author: "DeepRapid AI"
 reading_time: 15
