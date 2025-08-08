@@ -1,7 +1,7 @@
 # Site settings
 title: "DeepRapid AI Whitepapers"
 description: "Thought leadership and technical insights on the future of AI-first software architecture"
-url: "https://deeprapidai.github.io"
+url: "https://deeprapid.github.io"
 baseurl: "/whitepapers"
 
 # Author information
@@ -43,7 +43,7 @@ defaults:
     values:
       layout: "post"
   - scope:
-      path: ""
+      path: "_whitepapers"
       type: "whitepapers"
     values:
       layout: "whitepaper"
