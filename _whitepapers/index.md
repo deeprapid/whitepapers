@@ -1,0 +1,31 @@
+---
+layout: default
+title: "Whitepapers"
+description: "Browse all DeepRapid AI whitepapers"
+---
+
+<section class="container p-8">
+    <div class="text-center mb-8">
+        <h1>DeepRapid AI Whitepapers</h1>
+        <p>Thought leadership and technical insights on the future of AI-first software architecture</p>
+    </div>
+    
+    <div class="grid grid-1" style="max-width: 800px; margin: 0 auto;">
+        {% for whitepaper in site.whitepapers %}
+        <div class="card">
+            <div class="card-meta">
+                <span><i class="fas fa-calendar"></i> {{ whitepaper.date | date: "%B %Y" }}</span>
+                <span><i class="fas fa-clock"></i> {{ whitepaper.reading_time }} min read</span>
+            </div>
+            <h3 class="card-title">{{ whitepaper.title }}</h3>
+            <p class="card-subtitle">{{ whitepaper.subtitle }}</p>
+            <div class="card-tags">
+                {% for tag in whitepaper.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            <a href="{{ whitepaper.url }}" class="btn btn-primary" style="margin-top: 1rem;">Read Whitepaper</a>
+        </div>
+        {% endfor %}
+    </div>
+</section> 
