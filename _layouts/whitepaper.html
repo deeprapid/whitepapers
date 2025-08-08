@@ -193,42 +193,54 @@ layout: default
                             const languageLabels = document.querySelectorAll('strong');
                             console.log('Found', languageLabels.length, 'strong elements');
                             
-                            // Group consecutive language labels and their code blocks
+                            // Find sections with multiple language examples
+                            let currentSection = null;
+                            let sectionStart = null;
+                            
                             for (let i = 0; i < languageLabels.length; i++) {
                                 const label = languageLabels[i];
                                 if (label.textContent.includes(':')) {
                                     console.log('Found language label:', label.textContent);
                                     
-                                    const section = {
-                                        title: label,
-                                        codeBlocks: [],
-                                        labels: [label]
-                                    };
-                                    
-                                    // Find all consecutive language labels
-                                    let nextElement = label.nextElementSibling;
-                                    while (nextElement && nextElement.tagName === 'STRONG' && nextElement.textContent.includes(':')) {
-                                        section.labels.push(nextElement);
-                                        nextElement = nextElement.nextElementSibling;
-                                    }
-                                    
-                                    // Find code blocks that follow these labels
-                                    let currentElement = label;
-                                    while (currentElement) {
-                                        currentElement = currentElement.nextElementSibling;
-                                        if (currentElement && (currentElement.tagName === 'PRE' || currentElement.classList.contains('highlight'))) {
-                                            section.codeBlocks.push(currentElement);
-                                        } else if (currentElement && currentElement.tagName === 'STRONG' && currentElement.textContent.includes(':')) {
-                                            // Found next language section, stop here
-                                            break;
+                                    // Check if this is a programming language label
+                                    const languageName = label.textContent.replace(':', '').trim();
+                                    if (['Python', 'JavaScript', 'Go', 'Rust'].includes(languageName)) {
+                                        if (!currentSection) {
+                                            // Start a new section
+                                            currentSection = {
+                                                title: label,
+                                                codeBlocks: [],
+                                                labels: []
+                                            };
+                                            sectionStart = label;
                                         }
-                                    }
-                                    
-                                    if (section.codeBlocks.length >= 2) {
-                                        console.log('Creating tabs for section:', label.textContent, 'with', section.codeBlocks.length, 'code blocks');
-                                        codeSections.push(section);
+                                        currentSection.labels.push(label);
+                                        
+                                        // Find the code block that follows this label
+                                        let nextElement = label.nextElementSibling;
+                                        while (nextElement && nextElement.tagName !== 'STRONG') {
+                                            if (nextElement.tagName === 'PRE' || nextElement.classList.contains('highlight')) {
+                                                currentSection.codeBlocks.push(nextElement);
+                                                break;
+                                            }
+                                            nextElement = nextElement.nextElementSibling;
+                                        }
+                                    } else {
+                                        // This is not a programming language label, end current section
+                                        if (currentSection && currentSection.codeBlocks.length >= 2) {
+                                            console.log('Creating tabs for section starting with:', sectionStart.textContent, 'with', currentSection.codeBlocks.length, 'code blocks');
+                                            codeSections.push(currentSection);
+                                        }
+                                        currentSection = null;
+                                        sectionStart = null;
                                     }
                                 }
+                            }
+                            
+                            // Check the last section
+                            if (currentSection && currentSection.codeBlocks.length >= 2) {
+                                console.log('Creating tabs for final section starting with:', sectionStart.textContent, 'with', currentSection.codeBlocks.length, 'code blocks');
+                                codeSections.push(currentSection);
                             }
                             
                             console.log('Found', codeSections.length, 'multi-language sections');
