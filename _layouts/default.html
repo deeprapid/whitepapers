@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    
+    <!-- SEO -->
+    {% seo %}
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+    
+    <!-- Search -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <a href="{{ '/' | relative_url }}" class="navbar-logo">
+                    <span class="logo-text">DeepRapid AI</span>
+                    <span class="logo-subtitle">Whitepapers</span>
+                </a>
+            </div>
+            
+            <div class="navbar-menu">
+                <a href="{{ '/' | relative_url }}" class="nav-link">Home</a>
+                <a href="{{ '/whitepapers/' | relative_url }}" class="nav-link">Whitepapers</a>
+                <a href="{{ '/about/' | relative_url }}" class="nav-link">About</a>
+                <a href="{{ '/contact/' | relative_url }}" class="nav-link">Contact</a>
+            </div>
+            
+            <div class="navbar-search">
+                <div id="search-container">
+                    <input type="text" id="search-input" placeholder="Search whitepapers..." />
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+            </div>
+            
+            <div class="navbar-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {{ content }}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>DeepRapid AI</h3>
+                <p>Building the future of AI-first software architecture</p>
+                <div class="social-links">
+                    <a href="https://github.com/deeprapidai" target="_blank" rel="noopener">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://twitter.com/deeprapidai" target="_blank" rel="noopener">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://linkedin.com/company/deeprapidai" target="_blank" rel="noopener">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Whitepapers</h4>
+                <ul>
+                    <li><a href="{{ '/whitepapers/everything-as-tools/' | relative_url }}">Everything as Tools</a></li>
+                    <li><a href="{{ '/whitepapers/' | relative_url }}">All Whitepapers</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="{{ '/about/' | relative_url }}">About Us</a></li>
+                    <li><a href="{{ '/contact/' | relative_url }}">Contact</a></li>
+                    <li><a href="https://github.com/deeprapidai/whitepapers" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 DeepRapid AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Search Results Modal -->
+    <div id="search-modal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <h3>Search Results</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script>
+        // Initialize search
+        docsearch({
+            apiKey: 'YOUR_ALGOLIA_API_KEY',
+            indexName: 'deeprapidai_whitepapers',
+            inputSelector: '#search-input',
+            debug: false
+        });
+    </script>
+</body>
+</html> 

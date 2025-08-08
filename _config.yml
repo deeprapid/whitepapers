@@ -1,0 +1,94 @@
+# Site settings
+title: "DeepRapid AI Whitepapers"
+description: "Thought leadership and technical insights on the future of AI-first software architecture"
+url: "https://deeprapidai.github.io"
+baseurl: "/whitepapers"
+
+# Author information
+author:
+  name: "DeepRapid AI"
+  email: "hello@deeprapidai.com"
+  bio: "Building the future of AI-first software architecture"
+  location: "San Francisco, CA"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/deeprapidai"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter"
+      url: "https://twitter.com/deeprapidai"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://linkedin.com/company/deeprapidai"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+relative_links:
+  enabled: true
+  collections: true
+
+# Collections
+collections:
+  whitepapers:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "whitepapers"
+    values:
+      layout: "whitepaper"
+      author: "DeepRapid AI"
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-redirect-from
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+
+# Include files
+include:
+  - _pages
+
+# Sass settings
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Pagination
+paginate: 10
+paginate_path: "/page/:num/"
+
+# Search
+search: true
+
+# Social media
+social:
+  name: "DeepRapid AI"
+  links:
+    - "https://github.com/deeprapidai"
+    - "https://twitter.com/deeprapidai"
+    - "https://linkedin.com/company/deeprapidai"
+
+# Analytics (optional)
+google_analytics: "" 
