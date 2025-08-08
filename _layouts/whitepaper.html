@@ -218,8 +218,11 @@ layout: default
                                         
                                         // Find the code block that follows this label
                                         let nextElement = label.nextElementSibling;
+                                        console.log('Looking for code block after:', label.textContent);
                                         while (nextElement && nextElement.tagName !== 'STRONG') {
+                                            console.log('Checking element:', nextElement.tagName, nextElement.className);
                                             if (nextElement.tagName === 'PRE' || nextElement.classList.contains('highlight')) {
+                                                console.log('Found code block:', nextElement.tagName, nextElement.className);
                                                 currentSection.codeBlocks.push(nextElement);
                                                 break;
                                             }
