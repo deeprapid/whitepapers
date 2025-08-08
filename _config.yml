@@ -33,7 +33,7 @@ relative_links:
 collections:
   whitepapers:
     output: true
-    permalink: /:collection/:name/
+    permalink: /whitepapers/:name/
 
 # Defaults
 defaults:
