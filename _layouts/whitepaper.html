@@ -216,7 +216,7 @@ layout: default
                                     let currentElement = label;
                                     while (currentElement) {
                                         currentElement = currentElement.nextElementSibling;
-                                        if (currentElement && currentElement.tagName === 'PRE') {
+                                        if (currentElement && (currentElement.tagName === 'PRE' || currentElement.classList.contains('highlight'))) {
                                             section.codeBlocks.push(currentElement);
                                         } else if (currentElement && currentElement.tagName === 'STRONG' && currentElement.textContent.includes(':')) {
                                             // Found next language section, stop here
@@ -231,8 +231,12 @@ layout: default
                                 }
                             }
                             
+                            console.log('Found', codeSections.length, 'multi-language sections');
+                            
                             // Process each multi-language section
-                            codeSections.forEach(function(section) {
+                            codeSections.forEach(function(section, sectionIndex) {
+                                console.log('Processing section', sectionIndex, 'with', section.labels.length, 'labels and', section.codeBlocks.length, 'code blocks');
+                                
                                 // Create tab container
                                 const tabContainer = document.createElement('div');
                                 tabContainer.className = 'code-tabs';
