@@ -9,7 +9,7 @@ tags: ["AI", "APIs", "Architecture", "Future", "Innovation"]
 permalink: /en/whitepapers/everything-as-tools/
 ---
 
-# AI-First, UI-Compatible Architecture
+# AI-First API Architecture
 
 ---
 
